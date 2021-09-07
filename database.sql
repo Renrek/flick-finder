@@ -22,5 +22,12 @@ CREATE TABLE "anticipation" (
 CREATE TABLE "contact" (
     "id" SERIAL PRIMARY KEY,
     "userIdA" INT REFERENCES "user"."id",
-    "userIdB" INT REFERENCES ""
+    "userIdB" INT REFERENCES "user"."id",
+    "isConfirmed" BOOLEAN DEFAULT TRUE,
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "viewing" (
+    "id" SERIAL PRIMARY KEY,
+    "movieId"
 )
