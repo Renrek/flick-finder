@@ -16,18 +16,41 @@ CREATE TABLE "user" (
 
 CREATE TABLE "anticipation" (
     "id" serial PRIMARY KEY,
-    "name" varchar(255) NOT NULL
+    "name" varchar(255) NOT NULL,
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE TABLE "contact" (
     "id" SERIAL PRIMARY KEY,
-    "userIdA" INT REFERENCES "user"."id",
-    "userIdB" INT REFERENCES "user"."id",
+    "userIdA" INT REFERENCES "user",
+    "userIdB" INT REFERENCES "user",
     "isConfirmed" BOOLEAN DEFAULT TRUE,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
 CREATE TABLE "viewing" (
     "id" SERIAL PRIMARY KEY,
-    "movieId"
-)
+    "movieId" INT,
+    "viewingDate" DATE,
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "userMovieAnticipation" (
+    "id" SERIAL PRIMARY KEY,
+    "movieId" INT,
+    "anticipationId" INT REFERENCES "anticipation",
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE "userViewing" (
+    "id" SERIAL PRIMARY KEY,
+    "userId" INT REFERENCES "user",
+    "viewingId" INT REFERENCES "viewing",
+    "isHost" BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE "genres" (
+    "id" serial PRIMARY KEY,
+    "name" varchar(255) NOT NULL,
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
+);
