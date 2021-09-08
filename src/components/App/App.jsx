@@ -15,10 +15,12 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
-import AddMovie from '../AddMovie/AddMovie';
+import AddMoviePage from '../AddMoviePage/AddMoviePage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import MyMoviesPage from '../MyMoviesPage/MyMoviesPage';
+import MyContactsPage from '../MyContactsPage/MyContactsPage';
 
 
 /**** MATERIAL UI ****/
@@ -35,10 +37,10 @@ import grey from '@material-ui/core/colors/grey';
 const theme = createTheme({
   palette: {
     primary: {
-      main: green[500],
+      main: red[500],
     },
     secondary: {
-      main: red[500],
+      main: green[500],
     },
     background: {
       default: grey[500],
@@ -81,7 +83,19 @@ function App() {
                 // logged in shows InfoPage else shows LoginPage
                 exact
                 path="/add-movie"
-                component={AddMovie}
+                component={AddMoviePage}
+              />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/my-movies"
+                component={MyMoviesPage}
+              />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/my-contacts"
+                component={MyContactsPage}
               />
               <Route
                 exact
