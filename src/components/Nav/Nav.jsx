@@ -1,46 +1,125 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
+
 import { useSelector } from 'react-redux';
 
+/**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
+import { 
+  AppBar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  SwipeableDrawer,
+  Fab,
+  Typography,
+  Toolbar
+} from '@material-ui/core';
+
+import HomeIcon from '@material-ui/icons/Home';
+import InfoIcon from '@material-ui/icons/Info';
+import AddIcon from '@material-ui/icons/Add';
+import MenuIcon from '@material-ui/icons/Menu';
+import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
+import SearchIcon from '@material-ui/icons/Search';
+import { FullscreenExitTwoTone } from '@material-ui/icons';
+
+const useStyles = makeStyles({
+  title: {
+    flexGrow: 1,
+  },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
+  bar: {
+    marginBottom: 20,
+  },
+});
+
 function Nav() {
+  const classes = useStyles();
+
+  const [ drawerIsVisable , setDrawerIsVisable ] = React.useState(false);
+
   const user = useSelector((store) => store.user);
 
-  return (
-    <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
-      </Link>
-      <div>
-        {/* If no user is logged in, show these links */}
-        {user.id === null &&
-          // If there's no user, show login/registration links
-          <Link className="navLink" to="/login">
-            Login / Register
-          </Link>
-        }
+  const toggleDrawer = (open) => (event) => {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
 
+    setDrawerIsVisable(open);
+  };
+
+  return (
+    <>
+    <SwipeableDrawer
+      anchor="right"
+      open={drawerIsVisable}
+      onClose={toggleDrawer(false)}
+      onOpen={toggleDrawer(true)}
+    >
+      <List>
+        {/* If no user is logged in, show these links */}
+        {user.id === null && (
+        <ListItem component={Link} to="/login" onClick={toggleDrawer(false)}>
+          <ListItemIcon><HomeIcon /></ListItemIcon>
+          <ListItemText>
+            
+              Login / Register
+            
+          </ListItemText>
+        </ListItem>
+        )}
+        
+        <ListItem component={Link} to="/user" onClick={toggleDrawer(false)}>
+          <ListItemIcon><HomeIcon /></ListItemIcon>
+          <ListItemText>
+          
+              Home
+            
+          </ListItemText>
+        </ListItem>
         {/* If a user is logged in, show these links */}
         {user.id && (
           <>
-            <Link className="navLink" to="/user">
-              Home
-            </Link>
-
-            <Link className="navLink" to="/info">
-              Info Page
-            </Link>
-
-            <LogOutButton className="navLink" />
-          </>
+        <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
+        <ListItemIcon><AddIcon /></ListItemIcon>
+        <ListItemText>
+              Add Movie
+        </ListItemText>
+      </ListItem>
+      <ListItem>
+      <LogOutButton className="navLink" />
+      </ListItem>
+      </>
         )}
-
-        <Link className="navLink" to="/about">
+        <ListItem component={Link} to="/about" onClick={toggleDrawer(false)}>
+        <ListItemIcon><InfoIcon /></ListItemIcon>
+        <ListItemText>
+        
           About
-        </Link>
-      </div>
-    </div>
+        
+        </ListItemText>
+      </ListItem>
+      
+      </List>
+    </SwipeableDrawer>
+    <AppBar position="sticky" className={classes.bar}>
+      <Toolbar>
+      <Typography variant="h4" className={classes.title}>Flick Finder</Typography>
+      
+      <Fab onClick={toggleDrawer(true)} size="medium">
+        <MenuIcon />
+      </Fab>
+      </Toolbar>
+    </AppBar>
+    </>
   );
 }
 
