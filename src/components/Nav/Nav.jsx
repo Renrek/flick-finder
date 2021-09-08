@@ -12,12 +12,14 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  SwipeableDrawer
+  SwipeableDrawer,
+  Fab
 } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
+import MenuIcon from '@material-ui/icons/Menu';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -76,12 +78,10 @@ function Nav() {
             
           </ListItemText>
         </ListItem>
-        <ListItem>
+        <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
         <ListItemIcon><AddIcon /></ListItemIcon>
         <ListItemText>
-        <Link className="navLink" to="/info">
               Add Movie
-            </Link>
         </ListItemText>
       </ListItem>
       <ListItem>
@@ -89,9 +89,9 @@ function Nav() {
       </ListItem>
       </>
         )}
-        <ListItem>
+        <ListItem component={Link} to="/about" onClick={toggleDrawer(false)}>
         <ListItemIcon><InfoIcon /></ListItemIcon>
-        <ListItemText component={Link} to="/about" onClick={toggleDrawer(false)}>
+        <ListItemText>
         
           About
         
@@ -104,7 +104,9 @@ function Nav() {
       
         <h2 className="nav-title">Prime Solo Project</h2>
       
-     
+     <Fab onClick={toggleDrawer(true)}>
+       <MenuIcon />
+     </Fab>
     </AppBar>
     </>
   );
