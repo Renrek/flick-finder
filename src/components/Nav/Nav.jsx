@@ -13,7 +13,9 @@ import {
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
-  Fab
+  Fab,
+  Typography,
+  Toolbar
 } from '@material-ui/core';
 
 import HomeIcon from '@material-ui/icons/Home';
@@ -22,13 +24,20 @@ import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
 import SearchIcon from '@material-ui/icons/Search';
+import { FullscreenExitTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles({
+  title: {
+    flexGrow: 1,
+  },
   list: {
     width: 250,
   },
   fullList: {
     width: 'auto',
+  },
+  bar: {
+    marginBottom: 20,
   },
 });
 
@@ -67,9 +76,7 @@ function Nav() {
           </ListItemText>
         </ListItem>
         )}
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
+        
         <ListItem component={Link} to="/user" onClick={toggleDrawer(false)}>
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText>
@@ -78,6 +85,9 @@ function Nav() {
             
           </ListItemText>
         </ListItem>
+        {/* If a user is logged in, show these links */}
+        {user.id && (
+          <>
         <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
         <ListItemIcon><AddIcon /></ListItemIcon>
         <ListItemText>
@@ -100,13 +110,14 @@ function Nav() {
       
       </List>
     </SwipeableDrawer>
-    <AppBar position="sticky">
+    <AppBar position="sticky" className={classes.bar}>
+      <Toolbar>
+      <Typography variant="h4" className={classes.title}>Flick Finder</Typography>
       
-        <h2 className="nav-title">Prime Solo Project</h2>
-      
-     <Fab onClick={toggleDrawer(true)}>
-       <MenuIcon />
-     </Fab>
+      <Fab onClick={toggleDrawer(true)} size="medium">
+        <MenuIcon />
+      </Fab>
+      </Toolbar>
     </AppBar>
     </>
   );
