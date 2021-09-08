@@ -80,7 +80,7 @@ function App() {
         <CssBaseline />
         <Router>
         
-            <Nav  className={classes.bar} />
+            <Nav />
             <Container maxWidth="xs">
             <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
