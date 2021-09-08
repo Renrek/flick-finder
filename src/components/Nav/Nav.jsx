@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
+
 import { useSelector } from 'react-redux';
+
+/**** MATERIAL UI ****/
+import { AppBar } from '@material-ui/core';
 
 function Nav() {
   const user = useSelector((store) => store.user);
 
   return (
-    <div className="nav">
+    <AppBar position="sticky">
       <Link to="/home">
         <h2 className="nav-title">Prime Solo Project</h2>
       </Link>
@@ -40,7 +43,7 @@ function Nav() {
           About
         </Link>
       </div>
-    </div>
+    </AppBar>
   );
 }
 
