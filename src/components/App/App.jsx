@@ -37,15 +37,20 @@ import grey from '@material-ui/core/colors/grey';
 const theme = createTheme({
   palette: {
     primary: {
-      main: red[500],
+      main: green[500],
     },
     secondary: {
-      main: green[500],
+      main: red[200],
     },
     background: {
       default: grey[500],
     },
   },
+  props: {
+    MuiPaper: {
+      elevation: 12,
+    }
+  }
 });
 
 
@@ -57,6 +62,7 @@ function App() {
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
+    dispatch({ type: 'FETCH_CONTACTS'});
   }, [dispatch]);
 
   return (

@@ -6,21 +6,22 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 /**
  * GET route template
  */
-router.get('/available', rejectUnauthenticated, (req, res) => {
+router.get('/search/:string', rejectUnauthenticated, (req, res) => {
 
     const statement = `
         SELECT "id", "username" 
         FROM "user"
         WHERE "id" 
             NOT IN (SELECT "userIdB" FROM "contact" 
-                    WHERE "userIdA" = 1) 
+                    WHERE "userIdA" = $1) 
         AND "id"
             NOT IN (SELECT "userIdA" FROM "contact" 
-                    WHERE "userIdB" = 1) 
-        AND "id" != 1
+                    WHERE "userIdB" = $1) 
+        AND "id" != $1
+        AND "username" LIKE $2
         ORDER BY id ASC;`;
 
-    db.query(statement)
+    db.query(statement, [ req.user.id, '%'+req.params.string+'%'])
       .then( result => {
         res.send(result.rows);
       })
@@ -30,7 +31,7 @@ router.get('/available', rejectUnauthenticated, (req, res) => {
       })
 });
 
-router.get('/current/', rejectUnauthenticated, (req, res) => {
+router.get('/current', rejectUnauthenticated, (req, res) => {
 
     const statement = `
     SELECT "id", "username"
@@ -55,7 +56,7 @@ router.get('/current/', rejectUnauthenticated, (req, res) => {
     AS "test"
     ORDER BY "test"."id";`;
 
-    db.query(statement, [req.user.id])
+    db.query(statement, [ req.user.id ])
       .then( result => {
         res.send(result.rows);
       })
@@ -64,11 +65,7 @@ router.get('/current/', rejectUnauthenticated, (req, res) => {
         res.sendStatus(500)
       })
 });
-/**
- * POST route template
- */
-router.post('/', (req, res) => {
-  // POST route code here
-});
+
+
 
 module.exports = router;
