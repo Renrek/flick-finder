@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import AddMovieItem from '../AddMovieItem/AddMovieItem'
+
 /**** MATERIAL UI ****/
-import { makeStyles } from '@material-ui/core';
 import { 
   Paper,
   Typography,
@@ -12,12 +13,14 @@ import {
 
 import SearchIcon from '@material-ui/icons/Search';
 
-import AddIcon from '@material-ui/icons/Add';
+;
 
 
 function AddMoviePage() {
+
   const dispatch = useDispatch();
   const [searchField, setSearchField] = React.useState('');
+  
   const movieSearchResults = useSelector(store => store.movieSearch);
 
   const handleSubmit = (event) => {
@@ -30,7 +33,8 @@ function AddMoviePage() {
   };
 
   const handleAdd = (id) => {
-    console.log(id);
+    console.log('id',id);
+    console.log("anticipation",anticiapation);
   };
 
   return (
@@ -53,9 +57,7 @@ function AddMoviePage() {
         </form>
       </Paper>
       {movieSearchResults.map((movie)=> (
-        <Paper key={movie.id}><Typography>{movie.original_title}</Typography><img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}/>
-        <Button variant="contained" color="primary" onClick={()=> handleAdd(movie.id)}><AddIcon /></Button>
-        </Paper>
+        <AddMovieItem key={movie.id} movie={movie}/>
       ))}
     </>
   );

@@ -16,6 +16,7 @@ CREATE TABLE "user" (
 
 CREATE TABLE "anticipation" (
     "id" serial PRIMARY KEY,
+    "value" INT,
     "name" varchar(255) NOT NULL,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
@@ -39,6 +40,7 @@ CREATE TABLE "viewing" (
 CREATE TABLE "userMovieAnticipation" (
     "id" SERIAL PRIMARY KEY,
     "movieId" INT,
+  	"userId" INT REFERENCES "user",
     "anticipationId" INT REFERENCES "anticipation",
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
@@ -55,3 +57,13 @@ CREATE TABLE "genres" (
     "name" varchar(255) NOT NULL,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
+
+INSERT INTO "anticipation" 
+	( "name", "value" ) 
+VALUES
+    ( 'Very High', 5 ),
+    ( 'High', 4 ),
+    ( 'Average', 3 ),
+    ( 'Low', 2 ),
+    ( 'Very Low', 1 ),
+    ( 'Skip', 0 );
