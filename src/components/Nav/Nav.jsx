@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import LogOutButton from '../LogOutButton/LogOutButton';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
@@ -22,6 +22,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
 import SearchIcon from '@material-ui/icons/Search';
 import { FullscreenExitTwoTone } from '@material-ui/icons';
@@ -42,6 +43,8 @@ const useStyles = makeStyles({
 });
 
 function Nav() {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   const [ drawerIsVisable , setDrawerIsVisable ] = React.useState(false);
@@ -56,6 +59,17 @@ function Nav() {
     setDrawerIsVisable(open);
   };
 
+  const handleLogOut = (open) => (event) => {
+    
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    dispatch({ type: 'LOGOUT' });
+    setDrawerIsVisable(open);
+    history.push('/home');
+  };
+
+
   return (
     <>
     <SwipeableDrawer
@@ -65,49 +79,53 @@ function Nav() {
       onOpen={toggleDrawer(true)}
     >
       <List>
-        {/* If no user is logged in, show these links */}
-        {user.id === null && (
+        {user.id === null && ( // Visable if NOT logged in
         <ListItem component={Link} to="/login" onClick={toggleDrawer(false)}>
           <ListItemIcon><HomeIcon /></ListItemIcon>
-          <ListItemText>
-            
-              Login / Register
-            
-          </ListItemText>
+          <ListItemText> Login / Register </ListItemText>
         </ListItem>
         )}
         
         <ListItem component={Link} to="/user" onClick={toggleDrawer(false)}>
           <ListItemIcon><HomeIcon /></ListItemIcon>
+          <ListItemText> Home </ListItemText>
+        </ListItem>
+        {user.id && ( // Visable if user is logged in
+        <>
+        <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
+          <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>
-          
-              Home
-            
+              Add Movie
           </ListItemText>
         </ListItem>
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
-        <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
-        <ListItemIcon><AddIcon /></ListItemIcon>
-        <ListItemText>
-              Add Movie
-        </ListItemText>
-      </ListItem>
-      <ListItem>
-      <LogOutButton className="navLink" />
-      </ListItem>
+        <ListItem component={Link} to="/my-movies" onClick={toggleDrawer(false)}>
+          <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
+          <ListItemText>
+              My Movies
+          </ListItemText>
+        </ListItem>
+        <ListItem component={Link} to="/my-contacts" onClick={toggleDrawer(false)}>
+          <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
+          <ListItemText>
+              My Contacts
+          </ListItemText>
+        </ListItem>
       </>
         )}
         <ListItem component={Link} to="/about" onClick={toggleDrawer(false)}>
         <ListItemIcon><InfoIcon /></ListItemIcon>
         <ListItemText>
-        
           About
-        
         </ListItemText>
       </ListItem>
-      
+      {user.id && ( // Visable if user is logged in
+      <ListItem onClick={handleLogOut(false)}>
+        <ListItemIcon><CancelPresentationIcon /></ListItemIcon>
+        <ListItemText>
+          LogOut
+        </ListItemText>
+      </ListItem>
+      )}
       </List>
     </SwipeableDrawer>
     <AppBar position="sticky" className={classes.bar}>

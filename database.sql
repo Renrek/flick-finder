@@ -25,7 +25,8 @@ CREATE TABLE "contact" (
     "userIdA" INT REFERENCES "user",
     "userIdB" INT REFERENCES "user",
     "isConfirmed" BOOLEAN DEFAULT TRUE,
-    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
+    "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL,
+    UNIQUE ("userIdA", "userIdB")
 );
 
 CREATE TABLE "viewing" (
