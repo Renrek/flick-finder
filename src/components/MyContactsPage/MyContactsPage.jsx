@@ -12,8 +12,9 @@ import {
     Button
  } from '@material-ui/core';
 
- import FaceIcon from '@material-ui/icons/Face';
- import SearchIcon from '@material-ui/icons/Search';
+import FaceIcon from '@material-ui/icons/Face';
+import SearchIcon from '@material-ui/icons/Search';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const MyContactsPage = () => {
     const dispatch = useDispatch();
@@ -23,7 +24,10 @@ const MyContactsPage = () => {
     const contactsFound = useSelector(store => store.contactSearch)
 
     const handleDelete = (id) => {
-        console.log(id);
+        dispatch({
+            type: 'DELETE_CONTACT',
+            payload: id
+        });
     };
 
     const handleSubmit = (event) => {
@@ -34,8 +38,14 @@ const MyContactsPage = () => {
         })
         setSearchField('')
     };
+    
+    const handleAdd = (id) => {
+        dispatch({
+            type: 'SAVE_CONTACT',
+            payload: { id }
+        })
+    };
 
-    console.log('search', contactsFound);
     return (
         <>
             <Paper >
@@ -55,7 +65,15 @@ const MyContactsPage = () => {
                 </form>
                 <Typography>Found</Typography>
                 {contactsFound.map((contact)=>(
-                    <p>{contact.username}</p>
+                    <Chip 
+                        key={contact.id}
+                        icon={<FaceIcon />}
+                        deleteIcon={<AddCircleIcon />}
+                        label={contact.username}
+                        onDelete={() => handleAdd(contact.id)}
+                        onClick={() => handleAdd(contact.id)}
+                        color="primary"
+                    />
                 ))}
             </Paper>
            

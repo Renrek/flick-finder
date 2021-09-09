@@ -34,10 +34,10 @@ router.get('/search/:string', rejectUnauthenticated, (req, res) => {
 router.get('/current', rejectUnauthenticated, (req, res) => {
 
     const statement = `
-    SELECT "id", "username"
+    SELECT "id", "userId", "username"
     FROM 
     (
-        SELECT "c"."userIdB" "id", "u2"."username" "username"
+        SELECT "c"."id" "id", "c"."userIdB" "userId", "u2"."username" "username"
         FROM "contact" "c"
         JOIN "user" "u1"
             ON ( "u1"."id" = "c"."userIdA")
@@ -45,7 +45,7 @@ router.get('/current', rejectUnauthenticated, (req, res) => {
             ON ( "u2"."id" = "c"."userIdB")
         WHERE "c"."userIdA" = $1
         UNION
-        SELECT "c"."userIdA" "id", "u1"."username" "username"
+        SELECT "c"."id" "id", "c"."userIdA" "userId", "u1"."username" "username"
         FROM "contact" "c"
         JOIN "user" "u1"
             ON ( "u1"."id" = "c"."userIdA")
@@ -53,19 +53,45 @@ router.get('/current', rejectUnauthenticated, (req, res) => {
             ON ( "u2"."id" = "c"."userIdB")
         WHERE "c"."userIdB" = $1
     ) 
-    AS "test"
-    ORDER BY "test"."id";`;
+    AS "contacts"
+    ORDER BY "contacts"."id";`;
 
     db.query(statement, [ req.user.id ])
       .then( result => {
         res.send(result.rows);
       })
       .catch(err => {
-        console.log('ERROR: Get all movies', err);
+        console.log('ERROR: Select contacts', err);
         res.sendStatus(500)
       })
 });
 
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
 
+  const statement = `DELETE FROM contact WHERE id = $1`;
 
+  db.query(statement, [ req.params.id ])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Delete contacts', err);
+      res.sendStatus(500)
+    })
+});
+
+router.post('/', rejectUnauthenticated, (req, res) => {
+  
+  
+  const statement = `INSERT INTO "contact" ( "userIdA", "userIdB" ) VALUES ( $1, $2 );`;
+
+  db.query(statement, [ req.user.id, req.body.id ])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Post contacts', err);
+      res.sendStatus(500)
+    })
+});
 module.exports = router;
