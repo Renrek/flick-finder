@@ -2,11 +2,12 @@ const { default: axios } = require('axios');
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 /**
  * GET route template
  */
-router.get('/', (req, res) => {
+router.get('/:string', rejectUnauthenticated, (req, res) => {
   axios({
     method: 'GET',
     url: 'https://api.themoviedb.org/3/search/movie',
@@ -14,15 +15,15 @@ router.get('/', (req, res) => {
       api_key: process.env.TMDB_API_KEY,
       language: 'en-US',
       include_adult: 'false',
-      query: 'Star Wars'
+      query: req.params.string
     }
   })
   .then(response => {
-    console.log('axios response', response.data);
     res.send(response.data);
-  }).catch(err => {
+  })
+  .catch(err => {
     console.log('err',err);
-    
+    res.sendStatus(500);
   });
 });
 

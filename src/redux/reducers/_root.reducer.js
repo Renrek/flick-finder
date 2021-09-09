@@ -3,6 +3,7 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import contacts from './contacts.reducer';
 import contactSearch from './contactSearch.reducer';
+import movieSearch from './movieSearch.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   contacts, // array of contacts for user
   contactSearch, // results of a contact search 
+  movieSearch,
 });
 
 export default rootReducer;
