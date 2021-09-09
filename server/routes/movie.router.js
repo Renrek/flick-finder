@@ -19,7 +19,7 @@ router.get('/:string', rejectUnauthenticated, (req, res) => {
     }
   })
   .then(response => {
-    res.send(response.data);
+    res.send(response.data.results);
   })
   .catch(err => {
     console.log('err',err);

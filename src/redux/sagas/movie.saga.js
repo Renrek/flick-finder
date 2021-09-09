@@ -16,8 +16,13 @@ function* fetchMovieSearch(action){
     }
 }
 
+function* saveMovie(action){
+    
+}
+
 function* movieSaga() {
     yield takeLatest('FETCH_MOVIE_SEARCH', fetchMovieSearch);
+    yield takeLatest('SAVE_MOVIE', saveMovie)
     
 }
   

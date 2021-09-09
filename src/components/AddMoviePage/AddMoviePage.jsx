@@ -12,10 +12,13 @@ import {
 
 import SearchIcon from '@material-ui/icons/Search';
 
+import AddIcon from '@material-ui/icons/Add';
+
 
 function AddMoviePage() {
   const dispatch = useDispatch();
   const [searchField, setSearchField] = React.useState('');
+  const movieSearchResults = useSelector(store => store.movieSearch);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -24,6 +27,10 @@ function AddMoviePage() {
         payload: searchField
     })
     setSearchField('')
+  };
+
+  const handleAdd = (id) => {
+    console.log(id);
   };
 
   return (
@@ -45,6 +52,11 @@ function AddMoviePage() {
           <Button type="submit" variant="contained" color="primary"><SearchIcon /></Button>
         </form>
       </Paper>
+      {movieSearchResults.map((movie)=> (
+        <Paper key={movie.id}><Typography>{movie.original_title}</Typography><img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}/>
+        <Button variant="contained" color="primary" onClick={()=> handleAdd(movie.id)}><AddIcon /></Button>
+        </Paper>
+      ))}
     </>
   );
 }
