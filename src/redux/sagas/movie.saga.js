@@ -41,9 +41,23 @@ function* saveMovie(action){
     }
 }
 
+function* fetchMyMovies(action){
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.get(`/api/movie/my-list`, config);
+        yield put({ type: 'SET_MOVIE_LIST', payload: response.data });
+    } catch (error) {
+        console.log('Save movie post request failed', error);
+    }
+}
+
 function* movieSaga() {
     yield takeLatest('FETCH_ANTICIPATION_RATINGS', fetchAnticipationRatings);
     yield takeLatest('FETCH_MOVIE_SEARCH', fetchMovieSearch);
+    yield takeLatest('FETCH_MOVIE_LIST', fetchMyMovies)
     yield takeLatest('SAVE_MOVIE', saveMovie);    
 }
   

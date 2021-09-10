@@ -13,7 +13,20 @@ router.get('/anticipation-ratings', rejectUnauthenticated, (req,res) => {
       res.send(result.rows);
     })
     .catch(err => {
-      console.log('ERROR: Post contacts', err);
+      console.log('ERROR: Get ratings', err);
+      res.sendStatus(500)
+    })
+});
+
+router.get('/my-list', rejectUnauthenticated, (req,res) => {
+
+  const statement = `SELECT "id", "movieId", "anticipationId" FROM "userMovieAnticipation" WHERE "userId" = $1`
+  db.query(statement, [ req.user.id ])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Get my-movies', err);
       res.sendStatus(500)
     })
 });
