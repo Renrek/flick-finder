@@ -43,8 +43,6 @@ function* deleteContact(action){
 
 function* saveContact(action){
     try {
-        console.log('act',action.payload);
-        
         const config = {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,

@@ -82,7 +82,6 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 
 router.post('/', rejectUnauthenticated, (req, res) => {
   
-  
   const statement = `INSERT INTO "contact" ( "userIdA", "userIdB" ) VALUES ( $1, $2 );`;
 
   db.query(statement, [ req.user.id, req.body.id ])
