@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import MyMoviesItem from '../MyMoviesItem/MyMoviesItem';
+
 /**** MATERIAL UI ****/
 import { 
   Paper,
@@ -14,17 +16,22 @@ import SearchIcon from '@material-ui/icons/Search';
 const MyMoviesPage = () => {
 
     const dispatch = useDispatch();
-    const movieList = useSelector(store => store.movieList)
-    const [searchField, setSearchField] = React.useState('')
+    const movieList = useSelector(store => store.movieList);
+    const [searchField, setSearchField] = React.useState('');
+
     React.useEffect(() => {
         dispatch({ type: 'FETCH_MOVIE_LIST'})
-    }, [])
+    }, []);
+
     const handleSubmit =  () => {
 
     }
-    console.log(movieList);
+
     return (
         <>
+        {movieList.map((movie) => (
+            <MyMoviesItem key={movie.id} movie={movie} />
+        ))}
             {/* <Paper>
                 <Typography>Search</Typography>
                 <form

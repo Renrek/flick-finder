@@ -15,8 +15,6 @@ function* fetchAnticipationRatings(action){
 }
 
 function* fetchMovieSearch(action){
-    console.log('actionPayload',action.payload);
-    
     try {
         const config = {
             headers: { 'Content-Type': 'application/json' },
@@ -54,11 +52,30 @@ function* fetchMyMovies(action){
     }
 }
 
+function* fetchMovie(action){
+    
+}
+
+function* fetchGenres(){
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.get(`/api/movie/genres`, config);
+        yield put({ type: 'SET_GENRES', payload: response.data });
+    } catch (error) {
+        console.log('Movie Search get request failed', error);
+    }
+}
+
 function* movieSaga() {
     yield takeLatest('FETCH_ANTICIPATION_RATINGS', fetchAnticipationRatings);
     yield takeLatest('FETCH_MOVIE_SEARCH', fetchMovieSearch);
-    yield takeLatest('FETCH_MOVIE_LIST', fetchMyMovies)
-    yield takeLatest('SAVE_MOVIE', saveMovie);    
+    yield takeLatest('FETCH_MOVIE_LIST', fetchMyMovies);
+    yield takeLatest('SAVE_MOVIE', saveMovie);  
+    yield takeLatest('FETCH_MOVIE', fetchMovie);
+    yield takeLatest('FETCH_GENRES', fetchGenres);
 }
   
 export default movieSaga;

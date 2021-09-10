@@ -31,6 +31,24 @@ router.get('/my-list', rejectUnauthenticated, (req,res) => {
     })
 });
 
+router.get('/genres', rejectUnauthenticated, (req, res) => {
+  axios({
+    method: 'GET',
+    url: 'https://api.themoviedb.org/3/genre/movie/list',
+    params: {
+      api_key: process.env.TMDB_API_KEY,
+      language: 'en-US'
+    }
+  })
+  .then(response => {
+    res.send(response.data.results);
+  })
+  .catch(err => {
+    console.log('err',err);
+    res.sendStatus(500);
+  });
+});
+
 router.get('/:string', rejectUnauthenticated, (req, res) => {
   axios({
     method: 'GET',

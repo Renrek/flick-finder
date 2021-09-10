@@ -6,6 +6,7 @@ import contactSearch from './contactSearch.reducer';
 import movieSearch from './movieSearch.reducer';
 import anticipationOptions from'./anticipationOptions.reducer';
 import movieList from './movieList.reducer';
+import genres from './genres.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   movieSearch,
   anticipationOptions,
   movieList,
+  genres,
 });
 
 export default rootReducer;

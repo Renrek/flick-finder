@@ -64,6 +64,7 @@ function App() {
     dispatch({ type: 'FETCH_USER' });
     dispatch({ type: 'FETCH_CONTACTS'});
     dispatch({ type: 'FETCH_ANTICIPATION_RATINGS'});
+    dispatch({ type: 'FETCH_GENRES'});
   }, [dispatch]);
 
   return (
