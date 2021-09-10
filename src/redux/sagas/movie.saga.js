@@ -30,7 +30,15 @@ function* fetchMovieSearch(action){
 }
 
 function* saveMovie(action){
-    
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.post(`/api/movie/`, action.payload, config);
+    } catch (error) {
+        console.log('Save movie post request failed', error);
+    }
 }
 
 function* movieSaga() {

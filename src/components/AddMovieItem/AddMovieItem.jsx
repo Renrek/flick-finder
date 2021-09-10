@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
@@ -19,19 +19,27 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 
 const AddMovieItem = ({movie}) => {
+    const dispatch = useDispatch();
     const anticipationOptions = useSelector(store => store.anticipationOptions)
     const [anticiapation, setAnticipation] = React.useState('');
 
-    const handleAdd = (id) => {
-        console.log('id',id);
-        console.log("anticipation",anticiapation);
+    const handleSumbit = (event) => {
+        event.preventDefault();
+        dispatch({
+            type: 'SAVE_MOVIE',
+            payload: { movieId: movie.id, anticipationId: anticiapation }
+        });
       };
 
     return (
         <Paper >
         <Typography>{movie.original_title}</Typography>
         <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}/>
-        <form>
+        <form
+            noValidate
+            autoComplete="off" 
+            onSubmit={handleSumbit}
+        >
           <FormControl
             required
             variant="outlined"
@@ -46,14 +54,14 @@ const AddMovieItem = ({movie}) => {
             {anticipationOptions.map((option)=>(
               <MenuItem
                 key={option.id}
-                value={option.value}
+                value={option.id}
               >
                 {option.name}
               </MenuItem>
             ))}
             </Select>
           </FormControl>
-          <Button variant="contained" color="primary" onClick={()=> handleAdd(movie.id)}><AddIcon /></Button>
+          <Button type="submit" variant="contained" color="primary" ><AddIcon /></Button>
         </form>
         </Paper>
     )

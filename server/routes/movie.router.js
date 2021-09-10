@@ -40,7 +40,7 @@ router.get('/:string', rejectUnauthenticated, (req, res) => {
 
 
 router.post('/', (req, res) => {
-  const statement = `INSERT INTO "userMovieAnticipation" ( "movieId", "userId", "anticipation" ) VALUES ( $1, $2, $3 );`;
+  const statement = `INSERT INTO "userMovieAnticipation" ( "movieId", "userId", "anticipationId" ) VALUES ( $1, $2, $3 );`;
 
   db.query(statement, [ req.body.movieId, req.user.id, req.body.anticipationId ])
     .then( result => {
