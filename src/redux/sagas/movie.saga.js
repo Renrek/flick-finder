@@ -69,6 +69,32 @@ function* fetchGenres(){
     }
 }
 
+function* saveAnticipation(action){
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.put(`/api/movie/anticipation`, action.payload, config);
+        yield put({ type: 'FETCH_MOVIE_LIST'});
+    } catch (error) {
+        console.log('Save anticipation failed', error);
+    }
+}
+
+function* deleteMovie(action){
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.delete(`/api/movie/${action.payload}`, config);
+        yield put({ type: 'FETCH_MOVIE_LIST'});
+    } catch (error) {
+        console.log('Delete movie failed', error);
+    }
+}
+
 function* movieSaga() {
     yield takeLatest('FETCH_ANTICIPATION_RATINGS', fetchAnticipationRatings);
     yield takeLatest('FETCH_MOVIE_SEARCH', fetchMovieSearch);
@@ -76,6 +102,8 @@ function* movieSaga() {
     yield takeLatest('SAVE_MOVIE', saveMovie);  
     yield takeLatest('FETCH_MOVIE', fetchMovie);
     yield takeLatest('FETCH_GENRES', fetchGenres);
+    yield takeLatest('SAVE_ANTICIPATION', saveAnticipation);
+    yield takeLatest('DELETE_MOVIE', deleteMovie);
 }
   
 export default movieSaga;

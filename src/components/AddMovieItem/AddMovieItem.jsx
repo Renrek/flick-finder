@@ -18,6 +18,7 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 
 const AddMovieItem = ({movie}) => {
+  
     const dispatch = useDispatch();
     const anticipationOptions = useSelector(store => store.anticipationOptions)
     const [anticiapation, setAnticipation] = React.useState('');
