@@ -5,7 +5,6 @@ const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
-  console.log('HELLO WORLD', );
   
   const statement = `DELETE FROM "userMovieAnticipation" WHERE id = $1`;
 

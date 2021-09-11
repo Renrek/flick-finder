@@ -92,6 +92,12 @@ function Nav() {
         </ListItem>
         {user.id && ( // Visable if user is logged in
         <>
+        <ListItem component={Link} to="/create-viewing" onClick={toggleDrawer(false)}>
+          <ListItemIcon><AddIcon /></ListItemIcon>
+          <ListItemText>
+              Create Viewing
+          </ListItemText>
+        </ListItem>
         <ListItem component={Link} to="/add-movie" onClick={toggleDrawer(false)}>
           <ListItemIcon><AddIcon /></ListItemIcon>
           <ListItemText>

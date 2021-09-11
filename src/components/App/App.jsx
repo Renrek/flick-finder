@@ -21,6 +21,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import MyMoviesPage from '../MyMoviesPage/MyMoviesPage';
 import MyContactsPage from '../MyContactsPage/MyContactsPage';
+import CreateViewingPage from '../CreateViewingPage/CreateViewingPage';
 
 
 /**** MATERIAL UI ****/
@@ -32,6 +33,7 @@ import { Container } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
+import { Create } from '@material-ui/icons';
 
 /**** APP Theme ****/
 const theme = createTheme({
@@ -104,6 +106,12 @@ function App() {
                 exact
                 path="/my-contacts"
                 component={MyContactsPage}
+              />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/create-viewing"
+                component={CreateViewingPage}
               />
               <Route
                 exact
