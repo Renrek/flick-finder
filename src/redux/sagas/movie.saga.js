@@ -53,7 +53,16 @@ function* fetchMyMovies(action){
 }
 
 function* fetchMovie(action){
-    
+    // try {
+    //     const config = {
+    //         headers: { 'Content-Type': 'application/json' },
+    //         withCredentials: true,
+    //     };
+    //     const response = yield axios.get(`/api/movie/${action.payload}`, config);
+    //     yield put({ type: 'SET_GENRES', payload: response.data });
+    // } catch (error) {
+    //     console.log('Save movie post request failed', error);
+    // }
 }
 
 function* fetchGenres(){

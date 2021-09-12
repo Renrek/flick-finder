@@ -15,17 +15,20 @@ function* createViewing (action) {
 }
 
 function* fetchLastAddedViewing () {
+    console.log('ping');
+    
     try {
         const config = {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         };
         const response = yield axios.get(`/api/viewing/last-added`, config);
-        yield put({ type: 'SET_LAST_ADDED_VIEWING', payload: response });
+        yield put({ type: 'SET_LAST_ADDED_VIEWING', payload: response.data[0] });
     } catch (error) {
         
     }
 }
+
 function* viewingSaga() {
     yield takeLatest('CREATE_VIEWING', createViewing);
     yield takeLatest('FETCH_LAST_ADDED_VIEWING', fetchLastAddedViewing);

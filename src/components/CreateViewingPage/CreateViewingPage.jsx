@@ -37,13 +37,11 @@ const CreateViewingPage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(dateTime);
-        console.log(viewers);
         dispatch({
             type: 'CREATE_VIEWING',
             payload: { viewingDate: dateTime, viewers }
         });
-        history.push('/viewing-scheduled')
+        history.push('/viewing-scheduled');
     }
     
     return (

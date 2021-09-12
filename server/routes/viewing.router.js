@@ -94,13 +94,29 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
 
 router.get('/last-added', rejectUnauthenticated, (req,res) => {
 
-    const statement = `SELECT "id", "value", "name" FROM "anticipation"`
-    db.query(statement)
+    const statement = `
+        SELECT 
+            "v"."movieId", 
+            "v"."viewingDate", 
+            ARRAY(
+                SELECT "uv2"."userId" 
+                FROM "userViewing" "uv2" 
+                WHERE "uv2"."viewingId" = "v"."id" 
+                AND NOT "uv2"."isHost") "viewers"
+        FROM "viewing" "v"
+        JOIN "userViewing" "uv" 
+            ON ( "v"."id" = "uv"."viewingId" )
+        WHERE "uv"."userId" = $1
+        AND "uv"."isHost" = true
+        ORDER BY "v"."createdOn" DESC
+        LIMIT $1`;
+
+    db.query(statement, [ req.user.id ])
       .then( result => {
         res.send(result.rows);
       })
       .catch(err => {
-        console.log('ERROR: Get ratings', err);
+        console.log('ERROR: Get latest viewing', err);
         res.sendStatus(500)
       })
   });
