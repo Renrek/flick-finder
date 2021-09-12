@@ -1,6 +1,7 @@
 /**** SYSTEM ****/
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 
 
 import ViewerButton from '../ViewerButton/ViewerButton';
@@ -16,7 +17,8 @@ import {
 
 const CreateViewingPage = () => {
     const dispatch = useDispatch();
-    
+    const history = useHistory();
+
     const currentDate = () => {
         const d = new Date(); 
         const year = (d.getFullYear()).toString();
@@ -28,6 +30,7 @@ const CreateViewingPage = () => {
 
         return `${year}-${month}-${date}T${hours}:${mins}`;
     }
+
     const contacts = useSelector(store => store.contacts);
     const viewers = useSelector(store => store.viewerList);
     const [dateTime, setDateTime] = React.useState(currentDate)
@@ -40,6 +43,7 @@ const CreateViewingPage = () => {
             type: 'CREATE_VIEWING',
             payload: { viewingDate: dateTime, viewers }
         });
+        history.push('/viewing-scheduled')
     }
     
     return (

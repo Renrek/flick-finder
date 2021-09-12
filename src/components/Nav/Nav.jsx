@@ -25,7 +25,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
 import SearchIcon from '@material-ui/icons/Search';
-import { FullscreenExitTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   title: {

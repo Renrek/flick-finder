@@ -92,4 +92,17 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
     }
 });
 
+router.get('/last-added', rejectUnauthenticated, (req,res) => {
+
+    const statement = `SELECT "id", "value", "name" FROM "anticipation"`
+    db.query(statement)
+      .then( result => {
+        res.send(result.rows);
+      })
+      .catch(err => {
+        console.log('ERROR: Get ratings', err);
+        res.sendStatus(500)
+      })
+  });
+
 module.exports = router;
