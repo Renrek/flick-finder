@@ -17,9 +17,20 @@ import {
 const CreateViewingPage = () => {
     const dispatch = useDispatch();
     
+    const currentDate = () => {
+        const d = new Date(); 
+        const year = (d.getFullYear()).toString();
+        const month = ((d.getMonth()) + 101).toString().slice(-2);
+        const date = ((d.getDate()) + 100).toString().slice(-2);
+
+        const hours = ((d.getHours()) + 100).toString().slice(-2);
+        const mins = ((d.getMinutes()) + 100).toString().slice(-2);
+
+        return `${year}-${month}-${date}T${hours}:${mins}`;
+    }
     const contacts = useSelector(store => store.contacts);
     const viewers = useSelector(store => store.viewerList);
-    const [dateTime, setDateTime] = React.useState(Date.now())
+    const [dateTime, setDateTime] = React.useState(currentDate)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -28,7 +39,7 @@ const CreateViewingPage = () => {
         dispatch({
             type: 'CREATE_VIEWING',
             payload: { viewingDate: dateTime, viewers }
-        })
+        });
     }
     
     return (
@@ -38,8 +49,7 @@ const CreateViewingPage = () => {
                     <TextField
                         label="Next Viewing"
                         type="datetime-local"
-                        defaultValue="2017-05-24T10:30"
-                        //value={dateTime}
+                        defaultValue={dateTime}
                         InputLabelProps={{
                             shrink: true,
                         }}

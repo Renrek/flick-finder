@@ -10,7 +10,7 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
     //Establish Connection to database
     const client = await db.connect();
 
-    //Essayons - French - Combat Engineer Motto - "Let us try"
+    // Essayons - French - Combat Engineer Motto - "Let us try"
     try {
 
         await client.query('BEGIN');
