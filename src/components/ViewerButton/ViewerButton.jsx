@@ -11,20 +11,27 @@ import CheckIcon from '@material-ui/icons/Check';
 const ViewerButton = ({ contact }) => {
 
     const dispatch = useDispatch();
+    // Viewer reducer : an array of viewer ids
     const viewers = useSelector(store => store.viewerList);
+    // Local state if viewer id is within global veiwer array: value true/false
     const [isViewer, setIsViewer] = React.useState(viewers.includes(contact.userId))
     
     const toggleViewer = (id) => {
         let roster = viewers;
+        //Check if viewer is in array
         if(roster.includes(id)){
+            //IF so, remove viewer
             const index = roster.indexOf(id);
             if (index > -1) {
                 roster.splice(index, 1);
             }
         } else {
+            //IF not add to array
             roster.push(id);
         }
-        setIsViewer(roster.includes(contact.userId))
+        // Toggle local state
+        setIsViewer(roster.includes(contact.userId));
+        //Set global viewer list
         dispatch({type: 'SET_VIEWER_LIST', payload: roster})
     }
 

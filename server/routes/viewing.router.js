@@ -6,7 +6,6 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 
 
 router.post('/new', rejectUnauthenticated, async ( req, res ) => {
-    console.log('Incoming req.body', req.body);
     
     //Establish Connection to database
     const client = await db.connect();
@@ -60,6 +59,8 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
 
         //Insert viewing selection into database
         const setMovieReturn = await client.query(setMovieStatement, [ selectedMovie, req.body.viewingDate ]);
+
+        //ID of record added to pass on to the client.
         const movieReturnId = setMovieReturn.rows[0].id
         
         const setViewersStatement = `
@@ -67,16 +68,20 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
             VALUES ( $1, $2, $3 );
         `;
 
+        // Insert host record into userViewing, signifies ability to edit viewing
         await client.query(setViewersStatement, [ req.user.id, movieReturnId, true]);
 
+        // Insert the remaining viewers into userViewing
         await Promise.all(req.body.viewers.map(viewerId => {
             const viewerParams = [viewerId, movieReturnId, false];
             return client.query(setViewersStatement, viewerParams);
         }));
 
-        
+        // Everything went well, commit all work to the database.
         await client.query('COMMIT');
-        res.send(movieReturnId);
+        
+        // Hurray DONE!
+        res.sendStatus(201);
     } catch (error) {
         await client.query('ROLLBACK');
         console.log('error', error);
