@@ -4,7 +4,7 @@ const db = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-router.delete('/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/remove/:id', rejectUnauthenticated, (req, res) => {
   
   const statement = `DELETE FROM "userMovieAnticipation" WHERE id = $1`;
 
@@ -16,6 +16,25 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
       console.log('ERROR: Delete movie', err);
       res.sendStatus(500)
     })
+});
+
+router.get('/single/:id', rejectUnauthenticated, (req, res) => {
+  
+  axios({
+    method: 'GET',
+    url: `https://api.themoviedb.org/3/movie/${req.params.id}`,
+    params: {
+      api_key: process.env.TMDB_API_KEY
+    }
+  })
+  .then(response => {
+    res.send(response.data); 
+  })
+  .catch(err => {
+    console.log('err',err);
+    res.sendStatus(500);
+  });
+
 });
 
 router.get('/anticipation-ratings', rejectUnauthenticated, (req,res) => {

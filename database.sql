@@ -1,9 +1,3 @@
-
--- USER is a reserved keyword with Postgres
--- You must use double quotes in every query that user is in:
--- ex. SELECT * FROM "user";
--- Otherwise you will have errors!
-
 -- Written in camelCase in honor of my instructor :apple:
 
 CREATE TABLE "user" (
@@ -15,8 +9,8 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "anticipation" (
-    "id" serial PRIMARY KEY,
-    "value" INT,
+    "id" SERIAL PRIMARY KEY,
+    "value" INT UNIQUE,
     "name" varchar(255) NOT NULL,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
@@ -33,7 +27,7 @@ CREATE TABLE "contact" (
 CREATE TABLE "viewing" (
     "id" SERIAL PRIMARY KEY,
     "movieId" INT,
-    "viewingDate" DATE,
+    "viewingDate" TIMESTAMP,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
@@ -41,7 +35,7 @@ CREATE TABLE "userMovieAnticipation" (
     "id" SERIAL PRIMARY KEY,
     "movieId" INT,
   	"userId" INT REFERENCES "user",
-    "anticipationId" INT REFERENCES "anticipation",
+    "anticipationId" INT,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
@@ -65,5 +59,4 @@ VALUES
     ( 'High', 4 ),
     ( 'Average', 3 ),
     ( 'Low', 2 ),
-    ( 'Very Low', 1 ),
-    ( 'Skip', 0 );
+    ( 'Very Low', 1 );

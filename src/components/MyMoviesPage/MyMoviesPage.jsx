@@ -20,7 +20,7 @@ const MyMoviesPage = () => {
     const [searchField, setSearchField] = React.useState('');
 
     React.useEffect(() => {
-        dispatch({ type: 'FETCH_MOVIE_LIST'})
+        dispatch({ type: 'FETCH_MOVIE_LIST'});
     }, []);
 
     const handleSubmit =  () => {

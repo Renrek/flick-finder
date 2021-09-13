@@ -19,6 +19,10 @@ function* fetchUser() {
     // with an id and username set the client-side user object to let
     // the client-side code know the user is logged in
     yield put({ type: 'SET_USER', payload: response.data });
+    // PRELOAD
+    yield put({ type: 'FETCH_CONTACTS'});
+    yield put({ type: 'FETCH_ANTICIPATION_RATINGS'});
+    yield put({ type: 'FETCH_GENRES'});
   } catch (error) {
     console.log('User get request failed', error);
   }
