@@ -53,16 +53,16 @@ function* fetchMyMovies(action){
 }
 
 function* fetchMovie(action){
-    // try {
-    //     const config = {
-    //         headers: { 'Content-Type': 'application/json' },
-    //         withCredentials: true,
-    //     };
-    //     const response = yield axios.get(`/api/movie/${action.payload}`, config);
-    //     yield put({ type: 'SET_GENRES', payload: response.data });
-    // } catch (error) {
-    //     console.log('Save movie post request failed', error);
-    // }
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.get(`/api/movie/${action.payload}`, config);
+        yield put({ type: 'SET_MOVIE', payload: response.data });
+    } catch (error) {
+        console.log('Save movie post request failed', error);
+    }
 }
 
 function* fetchGenres(){
@@ -97,7 +97,7 @@ function* deleteMovie(action){
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         };
-        const response = yield axios.delete(`/api/movie/${action.payload}`, config);
+        const response = yield axios.delete(`/api/movie/remove/${action.payload}`, config);
         yield put({ type: 'FETCH_MOVIE_LIST'});
     } catch (error) {
         console.log('Delete movie failed', error);

@@ -44,13 +44,17 @@ const CreateViewingPage = () => {
         history.push('/viewing-scheduled');
     }
     
+    React.useEffect(() => {
+        dispatch({ type: 'UNSET_LAST_ADDED_VIEWING' })
+    }, [])
+
     return (
         <div>
             <Paper>
                 <form  noValidate onSubmit={handleSubmit}>
                     <TextField
                         label="Next Viewing"
-                        type="datetime-local"
+                        //type="datetime-local"
                         defaultValue={dateTime}
                         InputLabelProps={{
                             shrink: true,

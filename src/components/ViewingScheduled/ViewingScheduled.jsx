@@ -1,26 +1,39 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+
+/**** MATERIAL UI ****/
+import { 
+    Paper,
+    Typography,
+    TextField,
+    Button
+} from '@material-ui/core';
+
 const ViewingScheduled = () => {
     const dispatch = useDispatch();
 
     const lastAddedViewing = useSelector(store => store.lastAddedViewing)
-    React.useEffect(() => {
-        dispatch({ type: 'FETCH_LAST_ADDED_VIEWING' });
-    }, []);
+    
+    console.log(lastAddedViewing);
     
 
     return (
-        <div>
-            Viewing scheduled page <p>{lastAddedViewing.movieId}</p>
+        <Paper>
+            {lastAddedViewing.viewers ? <div>
+                <Typography variant="h6">Just added</Typography>
+            <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+lastAddedViewing.movieDetails.poster_path}/>
+            
+                <br/>
+            <p>{lastAddedViewing.movieId}</p>
             <p>{lastAddedViewing.viewingDate}</p>
-            {lastAddedViewing.viewers &&
-                lastAddedViewing.viewers.map(viewerId => (
+            {lastAddedViewing.viewers.map(viewerId => (
                     <div key={viewerId}>{viewerId}</div>
             ))}
        
-            
-        </div>
+         </div>
+         : <p>.....LOADING</p>}
+        </Paper>
     )
 }
 

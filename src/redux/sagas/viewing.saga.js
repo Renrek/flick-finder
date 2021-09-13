@@ -8,6 +8,7 @@ function* createViewing (action) {
             withCredentials: true,
         };
         const response = yield axios.post(`/api/viewing/new`, action.payload, config);
+        yield put({ type: 'FETCH_LAST_ADDED_VIEWING' });
         yield put({ type: 'UNSET_VIEWER_LIST' });
     } catch (error) {
         console.log('Contact save request failed', error);
@@ -15,15 +16,16 @@ function* createViewing (action) {
 }
 
 function* fetchLastAddedViewing () {
-    console.log('ping');
-    
+   
     try {
         const config = {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         };
         const response = yield axios.get(`/api/viewing/last-added`, config);
-        yield put({ type: 'SET_LAST_ADDED_VIEWING', payload: response.data[0] });
+        const movieDetails = yield axios.get(`/api/movie/single/${response.data[0].movieId}`, config);
+        
+        yield put({ type: 'SET_LAST_ADDED_VIEWING', payload: { ...response.data[0], movieDetails: movieDetails.data } });
     } catch (error) {
         
     }
