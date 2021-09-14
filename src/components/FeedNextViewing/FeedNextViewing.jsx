@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import getHumanReadableTime from '../../utility/getHumanReadableTime';
 import getMonthDDYYYY from '../../utility/getMonthDDYYYY';
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
 
 
 const FeedNextViewing = () => {
-    
+    const history = useHistory();
     const classes = useStyles();
     const dispatch = useDispatch();
     const movie = useSelector(store => store.nextViewing);
@@ -64,7 +65,7 @@ const FeedNextViewing = () => {
                 <Box flexGrow={1}>
                   
                     <Typography align="center">Viewers: {movie.viewers.length}</Typography>
-                    {movie.isHost && <Button color="primary" variant="contained">Edit</Button>}
+                    {movie.isHost && <Button color="primary" variant="contained" onClick={()=>history.push(`/edit-viewing/${movie.movieId}`)}>Edit</Button>}
                 </Box>
               </Box>
             </Paper>
