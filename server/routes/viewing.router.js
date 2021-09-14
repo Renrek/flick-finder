@@ -121,4 +121,34 @@ router.get('/last-added', rejectUnauthenticated, (req,res) => {
       })
   });
 
+router.get('/next-viewing', rejectUnauthenticated, (req,res) => {
+
+    const statement = `
+        SELECT 
+        "v"."movieId", 
+        "v"."viewingDate", 
+        "uv"."isHost",
+        ARRAY(
+            SELECT "uv2"."userId" 
+            FROM "userViewing" "uv2" 
+            WHERE "uv2"."viewingId" = "v"."id" 
+            AND NOT "uv2"."isHost") "viewers"
+        FROM "viewing" "v"
+        JOIN "userViewing" "uv" 
+            ON ( "v"."id" = "uv"."viewingId" )
+        WHERE "uv"."userId" = $1
+        AND "v"."viewingDate" >= NOW()
+        ORDER BY "v"."viewingDate" ASC
+        LIMIT 1`;
+
+    db.query(statement, [ req.user.id ])
+        .then( result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+        console.log('ERROR: Get latest viewing', err);
+            res.sendStatus(500)
+        })
+});
+
 module.exports = router;
