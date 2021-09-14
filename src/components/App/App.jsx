@@ -8,11 +8,14 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import theme from './theme';
+
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
+/**** ROUTES ****/
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import AddMoviePage from '../AddMoviePage/AddMoviePage';
@@ -27,35 +30,9 @@ import ViewingScheduled from '../ViewingScheduled/ViewingScheduled';
 
 /**** MATERIAL UI ****/
 import { CssBaseline } from '@material-ui/core';
-import { createTheme, ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
 import { Container } from '@material-ui/core';
-
-/**** STYLING Colors ****/
-import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
-import grey from '@material-ui/core/colors/grey';
-import { Create } from '@material-ui/icons';
-
-/**** APP Theme ****/
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: green[500],
-    },
-    secondary: {
-      main: red[200],
-    },
-    background: {
-      default: grey[500],
-    },
-  },
-  props: {
-    MuiPaper: {
-      elevation: 12,
-    }
-  }
-});
-
+import FeedPage from '../FeedPage/FeedPage';
 
 
 function App() {
@@ -117,6 +94,12 @@ function App() {
                 path="/viewing-scheduled"
                 component={ViewingScheduled}
               />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/feed"
+                component={FeedPage}
+              />
               <Route
                 exact
                 path="/login"
@@ -137,7 +120,7 @@ function App() {
                 {user.id ?
                   // If the user is already logged in, 
                   // redirect them to the /user page
-                  <Redirect to="/user" />
+                  <Redirect to="/feed" />
                   :
                   // Otherwise, show the registration page
                   <RegisterPage />
@@ -150,7 +133,7 @@ function App() {
                 {user.id ?
                   // If the user is already logged in, 
                   // redirect them to the /user page
-                  <Redirect to="/user" />
+                  <Redirect to="/feed" />
                   :
                   // Otherwise, show the Landing page
                   <LandingPage />

@@ -109,7 +109,7 @@ router.get('/last-added', rejectUnauthenticated, (req,res) => {
         WHERE "uv"."userId" = $1
         AND "uv"."isHost" = true
         ORDER BY "v"."createdOn" DESC
-        LIMIT $1`;
+        LIMIT 1`;
 
     db.query(statement, [ req.user.id ])
       .then( result => {

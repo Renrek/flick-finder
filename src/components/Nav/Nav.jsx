@@ -85,7 +85,7 @@ function Nav() {
         </ListItem>
         )}
         
-        <ListItem component={Link} to="/user" onClick={toggleDrawer(false)}>
+        <ListItem component={Link} to="/feed" onClick={toggleDrawer(false)}>
           <ListItemIcon><HomeIcon /></ListItemIcon>
           <ListItemText> Home </ListItemText>
         </ListItem>

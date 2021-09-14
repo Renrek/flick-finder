@@ -11,20 +11,38 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Box
 } from '@material-ui/core';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
+const useStyles = makeStyles({
+  titleSelector: {
+    width: '100%',
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  titleButton: {
+    display: 'block',
+  }
+  
+});
 
 import AddIcon from '@material-ui/icons/Add';
 
 const AddMovieItem = ({movie}) => {
-  
+    const classes = useStyles();
     const dispatch = useDispatch();
-    const anticipationOptions = useSelector(store => store.anticipationOptions)
-    const [anticiapation, setAnticipation] = React.useState('');
+    // Anticipation from options from database.
+    const anticipationOptions = useSelector(store => store.anticipationOptions);
 
+    // Local state for select input
+    const [anticiapation, setAnticipation] = React.useState('');
+    const [isSelected, setIsSelected] = React.useState(false)
+    //Save movie to database.
     const handleSumbit = (event) => {
         event.preventDefault();
+        setIsSelected(true);
         dispatch({
             type: 'SAVE_MOVIE',
             payload: { movieId: movie.id, anticipationId: anticiapation }
@@ -33,36 +51,65 @@ const AddMovieItem = ({movie}) => {
 
     return (
         <Paper >
-        <Typography>{movie.original_title}</Typography>
-        <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}/>
-        <form
-            noValidate
-            autoComplete="off" 
-            onSubmit={handleSumbit}
-        >
-          <FormControl
-            required
-            variant="outlined"
-          >
-            <InputLabel>anticipation</InputLabel>
-            <Select
-              name="anticipation_id"
-              onChange={event => setAnticipation(event.target.value)}
-              value={anticiapation}
-              label="Anticipation"
-            >
-            {anticipationOptions.map((option)=>(
-              <MenuItem
-                key={option.id}
-                value={option.id}
+          <Typography
+                className={classes.title}
+                variant="h6"
+                noWrap
+                gutterBottom
+                align="center"
               >
-                {option.name}
-              </MenuItem>
-            ))}
-            </Select>
-          </FormControl>
-          <Button type="submit" variant="contained" color="primary" ><AddIcon /></Button>
-        </form>
+                {movie.original_title}
+              </Typography>
+          <Box display="flex" justifyContent="center" >
+            <Box flexShrink={1} mr={2}>
+              <img 
+                style={{height: 200}}
+                alt={movie.original_title}
+                src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}
+              />
+            </Box>
+            <Box flexGrow={1}>
+              
+                <form
+                    noValidate
+                    autoComplete="off" 
+                    onSubmit={handleSumbit}
+                >
+                  <FormControl
+                    required
+                    variant="outlined"
+                    className={classes.titleSelector}
+                    disabled={isSelected}
+                  >
+                    <InputLabel>anticipation</InputLabel>
+                    <Select
+                      name="anticipation_id"
+                      onChange={event => setAnticipation(event.target.value)}
+                      value={anticiapation}
+                      label="Anticipation"
+                    >
+                    {anticipationOptions.map((option)=>(
+                      <MenuItem
+                        key={option.id}
+                        value={option.id}
+                      >
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                    </Select>
+                    <Button 
+                      className={classes.titleSelector}
+                      type="submit" 
+                      variant="contained" 
+                      color="primary" 
+                      disabled={isSelected}
+                    >
+                      { isSelected ? <CheckCircleIcon /> :  <AddIcon /> }
+                    </Button>
+                  </FormControl>
+                </form>
+            </Box>
+          </Box>
         </Paper>
     )
 }

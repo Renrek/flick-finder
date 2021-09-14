@@ -122,7 +122,7 @@ router.get('/genres', rejectUnauthenticated, (req, res) => {
     }
   })
   .then(response => {
-    res.send(response.data.results);
+    res.send(response.data.genres);
   })
   .catch(err => {
     console.log('err',err);
