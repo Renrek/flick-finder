@@ -20,9 +20,13 @@ import AddIcon from '@material-ui/icons/Add';
 const AddMovieItem = ({movie}) => {
   
     const dispatch = useDispatch();
-    const anticipationOptions = useSelector(store => store.anticipationOptions)
+    // Anticipation from options from database.
+    const anticipationOptions = useSelector(store => store.anticipationOptions);
+
+    // Local state for select input
     const [anticiapation, setAnticipation] = React.useState('');
 
+    //Save movie to database.
     const handleSumbit = (event) => {
         event.preventDefault();
         dispatch({

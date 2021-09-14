@@ -1,4 +1,4 @@
--- Written in camelCase in honor of my instructor :apple:
+-- Written in camelCase and not snake_case in honor of my instructor :apple:
 
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
@@ -27,7 +27,7 @@ CREATE TABLE "contact" (
 CREATE TABLE "viewing" (
     "id" SERIAL PRIMARY KEY,
     "movieId" INT,
-    "viewingDate" TIMESTAMP,
+    "viewingDate" TIMESTAMP WITHOUT TIME ZONE,
     "createdOn" TIMESTAMP DEFAULT NOW() NOT NULL
 );
 

@@ -2,9 +2,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import getNowForDateTime from '../../utility/getNowForDateTime';
 
-
-import ViewerButton from '../ViewerButton/ViewerButton';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
@@ -19,21 +18,9 @@ const CreateViewingPage = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const currentDate = () => {
-        const d = new Date(); 
-        const year = (d.getFullYear()).toString();
-        const month = ((d.getMonth()) + 101).toString().slice(-2);
-        const date = ((d.getDate()) + 100).toString().slice(-2);
-
-        const hours = ((d.getHours()) + 100).toString().slice(-2);
-        const mins = ((d.getMinutes()) + 100).toString().slice(-2);
-
-        return `${year}-${month}-${date}T${hours}:${mins}`;
-    }
-
     const contacts = useSelector(store => store.contacts);
     const viewers = useSelector(store => store.viewerList);
-    const [dateTime, setDateTime] = React.useState(currentDate)
+    const [dateTime, setDateTime] = React.useState(getNowForDateTime)
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -54,7 +41,7 @@ const CreateViewingPage = () => {
                 <form  noValidate onSubmit={handleSubmit}>
                     <TextField
                         label="Next Viewing"
-                        //type="datetime-local"
+                        type="datetime-local"
                         defaultValue={dateTime}
                         InputLabelProps={{
                             shrink: true,

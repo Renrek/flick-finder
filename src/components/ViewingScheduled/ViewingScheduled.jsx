@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import humanReadableTime from '../../utility/humanReadableTime'; // Human readable time.
 
 /**** MATERIAL UI ****/
 import { 
@@ -14,9 +14,17 @@ const ViewingScheduled = () => {
     const dispatch = useDispatch();
 
     const lastAddedViewing = useSelector(store => store.lastAddedViewing)
-    
+    const [dateTime, setDateTime] = React.useState('')
     console.log(lastAddedViewing);
+
     
+
+    React.useEffect(() => {
+        let time = new Date(lastAddedViewing.viewingDate)
+        let thing = humanReadableTime(time)
+       setDateTime(thing)
+        
+    }, [lastAddedViewing])
 
     return (
         <Paper>
@@ -26,7 +34,7 @@ const ViewingScheduled = () => {
             
                 <br/>
             <p>{lastAddedViewing.movieId}</p>
-            <p>{lastAddedViewing.viewingDate}</p>
+            <p>{dateTime}</p>
             {lastAddedViewing.viewers.map(viewerId => (
                     <div key={viewerId}>{viewerId}</div>
             ))}
