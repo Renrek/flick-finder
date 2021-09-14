@@ -1,11 +1,13 @@
 import React from 'react';
 
+
+import FeedNextViewing from '../FeedNextViewing/FeedNextViewing';
 const FeedPage = () => {
 
-    
+
     return (
         <div>
-            My Feed
+            <FeedNextViewing />
         </div>
     )
 }

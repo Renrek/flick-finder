@@ -133,7 +133,7 @@ function Nav() {
       )}
       </List>
     </SwipeableDrawer>
-    <AppBar position="sticky" className={classes.bar}>
+    <AppBar color="secondary" position="sticky" className={classes.bar}>
       <Toolbar>
       <Typography variant="h4" className={classes.title}>Flick Finder</Typography>
       

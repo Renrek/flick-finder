@@ -27,13 +27,28 @@ function* fetchLastAddedViewing () {
         
         yield put({ type: 'SET_LAST_ADDED_VIEWING', payload: { ...response.data[0], movieDetails: movieDetails.data } });
     } catch (error) {
-        
+        console.log('Fetch last added viewing failed', error);
+    }
+}
+
+function* fetchNextViewing() {
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.get(`/api/viewing/next-viewing`, config);
+        const movieDetails = yield axios.get(`/api/movie/single/${response.data[0].movieId}`, config);
+        yield put({ type: 'SET_NEXT_VIEWING', payload: { ...response.data[0], movieDetails: movieDetails.data } });
+    } catch (error) {
+        console.log('Fetch next viewing failed', error);
     }
 }
 
 function* viewingSaga() {
     yield takeLatest('CREATE_VIEWING', createViewing);
     yield takeLatest('FETCH_LAST_ADDED_VIEWING', fetchLastAddedViewing);
+    yield takeLatest('FETCH_NEXT_VIEWING', fetchNextViewing)
 }
 
 export default viewingSaga;
