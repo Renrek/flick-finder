@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getHumanReadableTime from '../../utility/getHumanReadableTime'; // Human readable time.
-
+import getMonthDDYYY from '../../utility/getMonthDDYYY';
 /**** MATERIAL UI ****/
 import { 
     Paper,
@@ -20,7 +20,10 @@ const ViewingScheduled = () => {
     
 
     React.useEffect(() => {
-       setDateTime(getHumanReadableTime(lastAddedViewing.viewingDate));
+       setDateTime({
+           date: getMonthDDYYY(lastAddedViewing.viewingDate),
+           time: getHumanReadableTime(lastAddedViewing.viewingDate)
+       });
     }, [lastAddedViewing])
 
     return (
@@ -30,8 +33,8 @@ const ViewingScheduled = () => {
             <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+lastAddedViewing.movieDetails.poster_path}/>
             
                 <br/>
-            <p>{lastAddedViewing.movieId}</p>
-            <p>{dateTime}</p>
+            <p>{dateTime.date}</p>
+            <p>{dateTime.time}</p>
             {lastAddedViewing.viewers.map(viewerId => (
                     <div key={viewerId}>{viewerId}</div>
             ))}
