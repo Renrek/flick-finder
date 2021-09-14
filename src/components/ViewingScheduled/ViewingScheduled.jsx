@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import humanReadableTime from '../../utility/humanReadableTime'; // Human readable time.
+import getHumanReadableTime from '../../utility/getHumanReadableTime'; // Human readable time.
 
 /**** MATERIAL UI ****/
 import { 
@@ -20,10 +20,7 @@ const ViewingScheduled = () => {
     
 
     React.useEffect(() => {
-        let time = new Date(lastAddedViewing.viewingDate)
-        let thing = humanReadableTime(time)
-       setDateTime(thing)
-        
+       setDateTime(getHumanReadableTime(lastAddedViewing.viewingDate));
     }, [lastAddedViewing])
 
     return (

@@ -1,6 +1,7 @@
 // Little function to convert a datetime block to human time
 
-export default (date) => {
+export default (rawDate) => {
+    const date = new Date(rawDate);
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';

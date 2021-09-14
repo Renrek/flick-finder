@@ -7,5 +7,6 @@ export default () => {
     const hours = ((d.getHours()) + 100).toString().slice(-2);
     const mins = ((d.getMinutes()) + 100).toString().slice(-2);
 
+    //Perfect for DateTime field's defaultValue
     return `${year}-${month}-${date}T${hours}:${mins}`;
 }

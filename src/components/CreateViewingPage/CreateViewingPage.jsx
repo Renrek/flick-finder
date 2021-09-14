@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import getNowForDateTime from '../../utility/getNowForDateTime';
 
+import ViewerButton from '../ViewerButton/ViewerButton';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
