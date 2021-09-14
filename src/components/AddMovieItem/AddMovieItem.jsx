@@ -11,14 +11,21 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Box
 } from '@material-ui/core';
 
-
+const useStyles = makeStyles({
+  titleSelector: {
+    width: '100%',
+    verticalAlign: 'middle',
+  },
+  
+});
 
 import AddIcon from '@material-ui/icons/Add';
 
 const AddMovieItem = ({movie}) => {
-  
+    const classes = useStyles();
     const dispatch = useDispatch();
     // Anticipation from options from database.
     const anticipationOptions = useSelector(store => store.anticipationOptions);
@@ -37,36 +44,56 @@ const AddMovieItem = ({movie}) => {
 
     return (
         <Paper >
-        <Typography>{movie.original_title}</Typography>
-        <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}/>
-        <form
-            noValidate
-            autoComplete="off" 
-            onSubmit={handleSumbit}
-        >
-          <FormControl
-            required
-            variant="outlined"
-          >
-            <InputLabel>anticipation</InputLabel>
-            <Select
-              name="anticipation_id"
-              onChange={event => setAnticipation(event.target.value)}
-              value={anticiapation}
-              label="Anticipation"
-            >
-            {anticipationOptions.map((option)=>(
-              <MenuItem
-                key={option.id}
-                value={option.id}
+          <Typography
+                className={classes.title}
+                variant="h6"
+                noWrap
+                gutterBottom
+                align="center"
               >
-                {option.name}
-              </MenuItem>
-            ))}
-            </Select>
-          </FormControl>
-          <Button type="submit" variant="contained" color="primary" ><AddIcon /></Button>
-        </form>
+                {movie.original_title}
+              </Typography>
+          <Box display="flex" justifyContent="center" >
+            <Box flexShrink={1} mr={2}>
+              <img 
+                style={{height: 200}}
+                alt={movie.original_title}
+                src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}
+              />
+            </Box>
+            <Box flexGrow={1}>
+              
+                <form
+                    noValidate
+                    autoComplete="off" 
+                    onSubmit={handleSumbit}
+                >
+                  <FormControl
+                    required
+                    variant="outlined"
+                    className={classes.titleSelector}
+                  >
+                    <InputLabel>anticipation</InputLabel>
+                    <Select
+                      name="anticipation_id"
+                      onChange={event => setAnticipation(event.target.value)}
+                      value={anticiapation}
+                      label="Anticipation"
+                    >
+                    {anticipationOptions.map((option)=>(
+                      <MenuItem
+                        key={option.id}
+                        value={option.id}
+                      >
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                    </Select>
+                    <Button type="submit" variant="contained" color="primary" ><AddIcon /></Button>
+                  </FormControl>
+                </form>
+            </Box>
+          </Box>
         </Paper>
     )
 }
