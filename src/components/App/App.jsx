@@ -32,6 +32,7 @@ import ViewingScheduled from '../ViewingScheduled/ViewingScheduled';
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core';
 import { Container } from '@material-ui/core';
+import FeedPage from '../FeedPage/FeedPage';
 
 
 function App() {
@@ -93,6 +94,12 @@ function App() {
                 path="/viewing-scheduled"
                 component={ViewingScheduled}
               />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/feed"
+                component={FeedPage}
+              />
               <Route
                 exact
                 path="/login"
@@ -113,7 +120,7 @@ function App() {
                 {user.id ?
                   // If the user is already logged in, 
                   // redirect them to the /user page
-                  <Redirect to="/user" />
+                  <Redirect to="/feed" />
                   :
                   // Otherwise, show the registration page
                   <RegisterPage />
@@ -126,7 +133,7 @@ function App() {
                 {user.id ?
                   // If the user is already logged in, 
                   // redirect them to the /user page
-                  <Redirect to="/user" />
+                  <Redirect to="/feed" />
                   :
                   // Otherwise, show the Landing page
                   <LandingPage />

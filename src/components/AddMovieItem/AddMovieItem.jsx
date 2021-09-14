@@ -14,11 +14,17 @@ import {
   Box
 } from '@material-ui/core';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
 const useStyles = makeStyles({
   titleSelector: {
     width: '100%',
-    verticalAlign: 'middle',
+    marginTop: 30,
+    marginBottom: 10,
   },
+  titleButton: {
+    display: 'block',
+  }
   
 });
 
@@ -32,10 +38,11 @@ const AddMovieItem = ({movie}) => {
 
     // Local state for select input
     const [anticiapation, setAnticipation] = React.useState('');
-
+    const [isSelected, setIsSelected] = React.useState(false)
     //Save movie to database.
     const handleSumbit = (event) => {
         event.preventDefault();
+        setIsSelected(true);
         dispatch({
             type: 'SAVE_MOVIE',
             payload: { movieId: movie.id, anticipationId: anticiapation }
@@ -72,6 +79,7 @@ const AddMovieItem = ({movie}) => {
                     required
                     variant="outlined"
                     className={classes.titleSelector}
+                    disabled={isSelected}
                   >
                     <InputLabel>anticipation</InputLabel>
                     <Select
@@ -89,7 +97,15 @@ const AddMovieItem = ({movie}) => {
                       </MenuItem>
                     ))}
                     </Select>
-                    <Button type="submit" variant="contained" color="primary" ><AddIcon /></Button>
+                    <Button 
+                      className={classes.titleSelector}
+                      type="submit" 
+                      variant="contained" 
+                      color="primary" 
+                      disabled={isSelected}
+                    >
+                      { isSelected ? <CheckCircleIcon /> :  <AddIcon /> }
+                    </Button>
                   </FormControl>
                 </form>
             </Box>
