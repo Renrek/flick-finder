@@ -24,7 +24,7 @@ import AddIcon from '@material-ui/icons/Add';
 import MenuIcon from '@material-ui/icons/Menu';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
-import SearchIcon from '@material-ui/icons/Search';
+
 
 const useStyles = makeStyles({
   title: {
@@ -107,6 +107,12 @@ function Nav() {
           <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
           <ListItemText>
               My Movies
+          </ListItemText>
+        </ListItem>
+        <ListItem component={Link} to="/my-viewings" onClick={toggleDrawer(false)}>
+          <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
+          <ListItemText>
+              My Viewings
           </ListItemText>
         </ListItem>
         <ListItem component={Link} to="/my-contacts" onClick={toggleDrawer(false)}>

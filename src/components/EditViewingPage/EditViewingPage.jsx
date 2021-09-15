@@ -81,8 +81,11 @@ const EditViewingPage = () => {
                     <Button color="primary" variant="contained" onClick={onSave}><SaveIcon /></Button>
                 </Box>
               </Box>
+              {movie.viewers.map((contact) => (
+                <Typography></Typography>
+            ))} 
             </Paper>
-
+           
             :
             <Paper>Loading..</Paper>
         }

@@ -170,6 +170,36 @@ router.put('/save-date/:id', rejectUnauthenticated, (req,res) => {
         })
 });
 
+router.get('/my-list', rejectUnauthenticated, (req,res) => {
+    
+    const statement = `
+        SELECT 
+            "v"."id",
+            "v"."movieId", 
+            "v"."viewingDate", 
+            "uv"."isHost",
+        ARRAY(
+            SELECT "uv2"."userId" 
+            FROM "userViewing" "uv2" 
+            WHERE "uv2"."viewingId" = "v"."id" 
+            AND NOT "uv2"."isHost") "viewers"
+        FROM "viewing" "v"
+        JOIN "userViewing" "uv" 
+            ON ( "v"."id" = "uv"."viewingId" )
+        WHERE "uv"."userId" = $1
+        AND "v"."viewingDate" >= NOW()
+        ORDER BY "v"."viewingDate" ASC`;
+
+    db.query(statement, [ req.user.id ])
+        .then( result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+        console.log('ERROR: Get /record/ viewing', err);
+            res.sendStatus(500)
+        })
+});
+
 router.get('/:id', rejectUnauthenticated, (req,res) => {
     
     const statement = `
@@ -178,8 +208,11 @@ router.get('/:id', rejectUnauthenticated, (req,res) => {
             "v"."viewingDate", 
             "uv"."isHost",
         ARRAY(
-            SELECT "uv2"."userId" 
-            FROM "userViewing" "uv2" 
+            SELECT
+                "u"."username" 
+            FROM "userViewing" "uv2"
+            JOIN "user" "u"
+                ON ("u"."id" = "uv2"."userId") 
             WHERE "uv2"."viewingId" = "v"."id" 
             AND NOT "uv2"."isHost") "viewers"
         FROM "viewing" "v"
