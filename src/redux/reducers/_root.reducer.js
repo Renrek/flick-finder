@@ -10,6 +10,7 @@ import genres from './genres.reducer';
 import viewerList from './viewers.reducer';
 import lastAddedViewing from './lastAddedViewing.reducer';
 import nextViewing from './nextViewing.reducer';
+import editViewing from './editViewing.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   viewerList,
   lastAddedViewing,
   nextViewing,
+  editViewing,
 });
 
 export default rootReducer;

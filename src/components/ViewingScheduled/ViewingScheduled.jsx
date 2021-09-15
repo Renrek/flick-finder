@@ -2,6 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import getHumanReadableTime from '../../utility/getHumanReadableTime'; // Human readable time.
 import getMonthDDYYY from '../../utility/getMonthDDYYYY';
+
+import MovieImage from '../MovieImage/MovieImage';
+
 /**** MATERIAL UI ****/
 import { 
     Paper,
@@ -9,6 +12,7 @@ import {
     TextField,
     Button
 } from '@material-ui/core';
+
 
 const ViewingScheduled = () => {
     const dispatch = useDispatch();
@@ -29,9 +33,9 @@ const ViewingScheduled = () => {
     return (
         <Paper>
             {lastAddedViewing.viewers ? <div>
-                <Typography variant="h6">Just added</Typography>
-            <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+lastAddedViewing.movieDetails.poster_path}/>
+                <Typography variant="h6">Just added {lastAddedViewing.movieDetails.original_title} </Typography>
             
+            <MovieImage title={lastAddedViewing.movieDetails.original_title} tmdbPath={lastAddedViewing.movieDetails.poster_path} />
                 <br/>
             <p>{dateTime.date}</p>
             <p>{dateTime.time}</p>

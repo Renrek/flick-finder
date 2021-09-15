@@ -26,6 +26,7 @@ import MyMoviesPage from '../MyMoviesPage/MyMoviesPage';
 import MyContactsPage from '../MyContactsPage/MyContactsPage';
 import CreateViewingPage from '../CreateViewingPage/CreateViewingPage';
 import ViewingScheduled from '../ViewingScheduled/ViewingScheduled';
+import EditViewingPage from '../EditViewingPage/EditViewingPage';
 
 
 /**** MATERIAL UI ****/
@@ -93,6 +94,12 @@ function App() {
                 exact
                 path="/viewing-scheduled"
                 component={ViewingScheduled}
+              />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/edit-viewing/:id"
+                component={EditViewingPage}
               />
               <ProtectedRoute 
                 // logged in shows InfoPage else shows LoginPage

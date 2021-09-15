@@ -29,6 +29,7 @@ const useStyles = makeStyles({
 });
 
 import AddIcon from '@material-ui/icons/Add';
+import MovieImage from '../MovieImage/MovieImage';
 
 const AddMovieItem = ({movie}) => {
     const classes = useStyles();
@@ -62,10 +63,9 @@ const AddMovieItem = ({movie}) => {
               </Typography>
           <Box display="flex" justifyContent="center" >
             <Box flexShrink={1} mr={2}>
-              <img 
-                style={{height: 200}}
-                alt={movie.original_title}
-                src={'https://image.tmdb.org/t/p/original/'+movie.poster_path}
+              <MovieImage 
+                title={movie.original_title} 
+                tmdbPath={movie.poster_path} 
               />
             </Box>
             <Box flexGrow={1}>

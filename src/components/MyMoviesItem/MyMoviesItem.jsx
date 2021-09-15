@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import MovieImage from '../MovieImage/MovieImage';
+
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
 import { 
@@ -14,6 +16,7 @@ import {
 } from '@material-ui/core';
 
 import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const MyMoviesItem = ({movie}) => {
 
@@ -38,8 +41,7 @@ const MyMoviesItem = ({movie}) => {
     return (
         <Paper>
             <Typography>{movie.data.title}</Typography>
-            <img style={{height: 200}}src={'https://image.tmdb.org/t/p/original/'+movie.data.poster_path}/>
-            
+            <MovieImage title={movie.data.title} tmdbPath={movie.data.poster_path}/>
               <FormControl
                 required
                 variant="outlined"

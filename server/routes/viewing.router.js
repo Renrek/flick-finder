@@ -116,7 +116,7 @@ router.get('/last-added', rejectUnauthenticated, (req,res) => {
         res.send(result.rows);
       })
       .catch(err => {
-        console.log('ERROR: Get latest viewing', err);
+        console.log('ERROR: Get last-added viewing', err);
         res.sendStatus(500)
       })
   });
@@ -125,6 +125,7 @@ router.get('/next-viewing', rejectUnauthenticated, (req,res) => {
 
     const statement = `
         SELECT 
+        "v"."id",
         "v"."movieId", 
         "v"."viewingDate", 
         "uv"."isHost",
@@ -146,9 +147,57 @@ router.get('/next-viewing', rejectUnauthenticated, (req,res) => {
             res.send(result.rows);
         })
         .catch(err => {
-        console.log('ERROR: Get latest viewing', err);
+        console.log('ERROR: Get next-viewing viewing', err);
             res.sendStatus(500)
         })
 });
+
+router.put('/save-date/:id', rejectUnauthenticated, (req,res) => {
+    
+    const statement = `
+        UPDATE "viewing"
+        SET "viewingDate" = $1
+        WHERE "id" = $2
+        `;
+
+    db.query(statement, [ req.body.date, req.params.id ])
+        .then( result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+        console.log('ERROR: Updateing viewing date', err);
+            res.sendStatus(500)
+        })
+});
+
+router.get('/:id', rejectUnauthenticated, (req,res) => {
+    
+    const statement = `
+        SELECT 
+            "v"."movieId", 
+            "v"."viewingDate", 
+            "uv"."isHost",
+        ARRAY(
+            SELECT "uv2"."userId" 
+            FROM "userViewing" "uv2" 
+            WHERE "uv2"."viewingId" = "v"."id" 
+            AND NOT "uv2"."isHost") "viewers"
+        FROM "viewing" "v"
+        JOIN "userViewing" "uv" 
+            ON ( "v"."id" = "uv"."viewingId" )
+        WHERE "v"."id" = $2
+        AND "uv"."userId" = $1`;
+
+    db.query(statement, [ req.user.id, req.params.id ])
+        .then( result => {
+            res.send(result.rows);
+        })
+        .catch(err => {
+        console.log('ERROR: Get /record/ viewing', err);
+            res.sendStatus(500)
+        })
+});
+
+
 
 module.exports = router;

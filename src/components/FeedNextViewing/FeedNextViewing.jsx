@@ -1,7 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import getHumanReadableTime from '../../utility/getHumanReadableTime';
 import getMonthDDYYYY from '../../utility/getMonthDDYYYY';
+
+import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
@@ -28,7 +31,7 @@ const useStyles = makeStyles({
 
 
 const FeedNextViewing = () => {
-    
+    const history = useHistory();
     const classes = useStyles();
     const dispatch = useDispatch();
     const movie = useSelector(store => store.nextViewing);
@@ -37,7 +40,7 @@ const FeedNextViewing = () => {
         dispatch({ type: 'FETCH_NEXT_VIEWING'});
     }, []);
 
-    console.log('movie', movie);
+    
     return (
         <>
         { Object.keys(movie).length > 0 && 
@@ -55,16 +58,11 @@ const FeedNextViewing = () => {
                   </Typography>
               <Box display="flex" justifyContent="center" >
                 <Box flexShrink={1} mr={2}>
-                  <img 
-                    style={{height: 200}}
-                    alt={movie.original_title}
-                    src={'https://image.tmdb.org/t/p/original/'+movie.movieDetails.poster_path}
-                  />
+                  <MovieImage title={movie.original_title} tmdbPath={movie.movieDetails.poster_path} />
                 </Box>
                 <Box flexGrow={1}>
-                  
                     <Typography align="center">Viewers: {movie.viewers.length}</Typography>
-                    {movie.isHost && <Button color="primary" variant="contained">Edit</Button>}
+                    {movie.isHost && <Button color="primary" variant="contained" onClick={()=>history.push(`/edit-viewing/${movie.id}`)}>Edit</Button>}
                 </Box>
               </Box>
             </Paper>
