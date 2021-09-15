@@ -2,7 +2,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import getNowForDateTime from '../../utility/getNowForDateTime';
+import formatDateForField from '../../utility/formatDateForField';
 
 import ViewerButton from '../ViewerButton/ViewerButton';
 
@@ -21,7 +21,7 @@ const CreateViewingPage = () => {
 
     const contacts = useSelector(store => store.contacts);
     const viewers = useSelector(store => store.viewerList);
-    const [dateTime, setDateTime] = React.useState(getNowForDateTime)
+    const [dateTime, setDateTime] = React.useState(formatDateForField())
 
     const handleSubmit = (event) => {
         event.preventDefault();
