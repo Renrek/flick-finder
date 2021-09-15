@@ -27,6 +27,7 @@ import MyContactsPage from '../MyContactsPage/MyContactsPage';
 import CreateViewingPage from '../CreateViewingPage/CreateViewingPage';
 import ViewingScheduled from '../ViewingScheduled/ViewingScheduled';
 import EditViewingPage from '../EditViewingPage/EditViewingPage';
+import MyViewingsPage from '../MyViewingsPage/MyViewingsPage';
 
 
 /**** MATERIAL UI ****/
@@ -94,6 +95,12 @@ function App() {
                 exact
                 path="/viewing-scheduled"
                 component={ViewingScheduled}
+              />
+              <ProtectedRoute 
+                // logged in shows InfoPage else shows LoginPage
+                exact
+                path="/my-viewings"
+                component={MyViewingsPage}
               />
               <ProtectedRoute 
                 // logged in shows InfoPage else shows LoginPage

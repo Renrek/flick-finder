@@ -71,13 +71,26 @@ function* saveViewingDate(action){
         console.log('save viewing date failed', error);
     }
 }
+function* fetchViewingList(){
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        };
+        const response = yield axios.get(`/api/viewing/my-list`, config);
+        yield put({ type: 'SET_VIEWING_LIST', payload: response.data });
+    } catch (error) {
+        console.log('Get viewing list failed', error);
+    }
+}
 
 function* viewingSaga() {
     yield takeLatest('CREATE_VIEWING', createViewing);
     yield takeLatest('FETCH_LAST_ADDED_VIEWING', fetchLastAddedViewing);
     yield takeLatest('FETCH_NEXT_VIEWING', fetchNextViewing);
     yield takeLatest('FETCH_VIEWING_TO_EDIT', fetchViewingToEdit);
-    yield takeLatest('SAVE_VIEWING_DATE', saveViewingDate)
+    yield takeLatest('SAVE_VIEWING_DATE', saveViewingDate);
+    yield takeLatest('FETCH_VIEWING_LIST', fetchViewingList);
 }
 
 export default viewingSaga;

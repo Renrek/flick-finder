@@ -61,6 +61,7 @@ const FeedNextViewing = () => {
                   <MovieImage title={movie.original_title} tmdbPath={movie.movieDetails.poster_path} />
                 </Box>
                 <Box flexGrow={1}>
+                  
                     <Typography align="center">Viewers: {movie.viewers.length}</Typography>
                     {movie.isHost && <Button color="primary" variant="contained" onClick={()=>history.push(`/edit-viewing/${movie.id}`)}>Edit</Button>}
                 </Box>
