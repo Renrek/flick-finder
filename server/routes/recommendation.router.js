@@ -6,7 +6,7 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const tf = require('@tensorflow/tfjs');
 
 
-router.get('/', async ( req, res ) => {
+router.get('/', rejectUnauthenticated, async ( req, res ) => {
  
     try {
         // Grab movie genres
@@ -36,7 +36,7 @@ router.get('/', async ( req, res ) => {
             WHERE "userId" = $1
             ORDER BY "id" LIMIT 100`;
 
-        const result = await db.query(statement, [ 1 ]); //req.user.id
+        const result = await db.query(statement, [ req.user.id ]); 
 
         //Cycle through sql results and add TMDB data to the information
         await Promise.all(result.rows.map( async (movie) => {
