@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const tf = require('@tensorflow/tfjs');
 
 
 router.get('/', async ( req, res ) => {
@@ -59,14 +60,12 @@ router.get('/', async ( req, res ) => {
             }
         }));
         
-        let jsMovieGenres = []; // Array to give to TensorFlow
-        let jsPreferences =[[]]; //2D array to match jsMovieGenres
-        let jsGenres = []; // Array to store the Human readable
-        // Cycle through genres array and pull out name property
-        jsGenres.push(genres.map( g => g.name));
+        let jsMovieGenres = []; // Array of Movie genres arrays to give to TensorFlow
+        let jsPreferences =[[]]; // 2D array to match jsMovieGenres
+
         // Loop through each movie
         for (const movie of movies) {
-            console.log('title', movie.data.original_title);
+            
             jsPreferences[0].push(movie.anticipation)
             // Put the genres of the move into a nice clean array
             let movieArrayOfGenresIds = [];
@@ -75,7 +74,7 @@ router.get('/', async ( req, res ) => {
             // Each movie will have an array of boolean values per genre
             let genreBooleanArray = [];
             for (const genre of genres) {
-                
+                // If 
                 if (movieArrayOfGenresIds.includes(genre.id)) {
                     genreBooleanArray.push(1)
                 } else {
@@ -85,15 +84,54 @@ router.get('/', async ( req, res ) => {
             }
             jsMovieGenres.push(genreBooleanArray)
         }
-        console.log('result', jsMovieGenres);
-        console.log('jsPref', jsPreferences);
-        console.log('jsGenres', jsGenres);
+        // console.log('result', jsMovieGenres);
+        // console.log('jsPref', jsPreferences);
+        // console.log('jsGenres', jsGenres);
         
+        //console.log(tf.version.tfjs);
+
+        let rankedGenres;
+        await tf.tidy(() => {
+            // Movie tastes of the user
+            const preferences = tf.tensor(jsPreferences);
+            // Grid ( 2D Array ) of boolean values in regard to movie genres
+            const movieGenres = tf.tensor(jsMovieGenres);
+            // Matrix multiplication operation - Neo would be proud
+            const preferedGenres = tf.matMul(preferences, movieGenres);
+
+            //preferedGenres.print();
+            const topPreferedGenres = tf.topk(preferedGenres, genres.length);
+            const topGenres = topPreferedGenres.indices.arraySync();
+
+            rankedGenres = topGenres[0].map(v => genres[v]);
+        })
+        //console.log('top ranked', rankedGenres);
         
-        
+        try {
+
+            let tmdb = await axios({
+              method: 'GET',
+              url: `https://api.themoviedb.org/3/discover/movie/`,
+              params: {
+                language: 'en-US',
+                api_key: process.env.TMDB_API_KEY,
+                with_genres: `${rankedGenres[0].id},${rankedGenres[1].id},${rankedGenres[2].id}`
+              }
+            });
+    
+            //myList.push({ ...movie, data: tmdb.data});
+            //console.log('TTTTMMMMDDDDBBBB', tmdb.data);
+            res.send({ topThreeGenres: [ rankedGenres[0].name, rankedGenres[1].name, rankedGenres[2].name ], data: tmdb.data })
+          } catch (error) {
+    
+            console.log('err',error);
+            res.sendStatus(500);
+    
+          }
+
         res.sendStatus(200)
     } catch (error) {
-        console.log('Recommendation house is on fire',error);
+        console.log('Recommendation tf HOUSE IS ON FIRE',error);
         res.sendStatus(500); 
     }
     
