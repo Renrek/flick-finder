@@ -2,27 +2,32 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+
+/**** SNIPPETS ****/
 import formatDateForField from '../../utility/formatDateForField';
 
+/**** COMPONENTS ****/
 import ViewerButton from '../ViewerButton/ViewerButton';
 
 /**** MATERIAL UI ****/
-import { makeStyles } from '@material-ui/core';
 import { 
     Paper,
-    Typography,
     TextField,
     Button
  } from '@material-ui/core';
 
 const CreateViewingPage = () => {
+
+    /**** HOOKS ****/
     const dispatch = useDispatch();
     const history = useHistory();
 
+    /**** STATE ****/
     const contacts = useSelector(store => store.contacts);
     const viewers = useSelector(store => store.viewerList);
     const [dateTime, setDateTime] = React.useState(formatDateForField())
 
+    // Create a viewing send by submitting it to database
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch({
@@ -32,6 +37,7 @@ const CreateViewingPage = () => {
         history.push('/viewing-scheduled');
     }
     
+    // Clear global state to prepare the next page.
     React.useEffect(() => {
         dispatch({ type: 'UNSET_LAST_ADDED_VIEWING' })
     }, [])

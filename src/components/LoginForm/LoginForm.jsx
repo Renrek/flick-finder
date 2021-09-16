@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {useSelector} from 'react-redux';
+/**** SYSTEM ****/
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const errors = useSelector(store => store.errors);
+  /**** HOOKS ****/
   const dispatch = useDispatch();
 
+  /**** STATE ****/
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const errors = useSelector(store => store.errors);
+  
+  //Initiate Login
   const login = (event) => {
     event.preventDefault();
 

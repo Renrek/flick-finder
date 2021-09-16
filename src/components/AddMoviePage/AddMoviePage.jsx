@@ -1,6 +1,8 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+/**** COMPONENTS ****/
 import AddMovieItem from '../AddMovieItem/AddMovieItem'
 
 /**** MATERIAL UI ****/
@@ -12,6 +14,7 @@ import {
   Button
 } from '@material-ui/core';
 
+/**** ICONS ****/
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles({
@@ -26,12 +29,16 @@ const useStyles = makeStyles({
 
 function AddMoviePage() {
 
+  /**** HOOKS ****/
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [searchField, setSearchField] = React.useState('');
-  
-  const movieSearchResults = useSelector(store => store.movieSearch);
 
+  /**** STATE ****/
+  // Movie search from TMDB api proxied through express.js
+  const movieSearchResults = useSelector(store => store.movieSearch);
+  const [searchField, setSearchField] = React.useState('');
+
+  // Reach out to express.js to send out api request to TMDB
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch({
@@ -39,11 +46,6 @@ function AddMoviePage() {
         payload: searchField
     })
     setSearchField('')
-  };
-
-  const handleAdd = (id) => {
-    console.log('id',id);
-    console.log("anticipation",anticiapation);
   };
 
   return (

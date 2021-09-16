@@ -1,8 +1,13 @@
+/**** SYSTEM ****/
 import React from 'react';
-import LoginForm from '../LoginForm/LoginForm';
 import { useHistory } from 'react-router-dom';
 
+/**** COMPONENTS ****/
+import LoginForm from '../LoginForm/LoginForm';
+
 function LoginPage() {
+
+  /**** HOOKS ****/
   const history = useHistory();
 
   return (

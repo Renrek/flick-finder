@@ -1,8 +1,10 @@
+/**** SYSTEM ****/
 import React from 'react';
 
+// Simple consistant image
 const MovieImage = ({ title, tmdbPath}) => {
-    return (
-        
+
+    return ( 
         <img 
           style={{height: 200}}
           alt={title}

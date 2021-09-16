@@ -1,21 +1,27 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /**** MATERIAL UI ****/
 import { Button } from '@material-ui/core';
 
+/**** ICONS ****/ // will be incorperated near future, weekend styling
 import FaceIcon from '@material-ui/icons/Face';
 import AddIcon from '@material-ui/icons/Add';
 import CheckIcon from '@material-ui/icons/Check';
 
 const ViewerButton = ({ contact }) => {
 
+    /**** HOOKS ****/
     const dispatch = useDispatch();
+
+    /**** STATE ****/
     // Viewer reducer : an array of viewer ids
     const viewers = useSelector(store => store.viewerList);
     // Local state if viewer id is within global veiwer array: value true/false
     const [isViewer, setIsViewer] = React.useState(viewers.includes(contact.userId))
     
+    // Switch viewer from opposite state, to view, or not to view, ?
     const toggleViewer = (id) => {
         let roster = viewers;
         //Check if viewer is in array
@@ -34,8 +40,6 @@ const ViewerButton = ({ contact }) => {
         //Set global viewer list
         dispatch({type: 'SET_VIEWER_LIST', payload: roster})
     }
-
-    
 
     return (
         <Button 
