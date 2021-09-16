@@ -51,7 +51,7 @@ router.get('/', async ( req, res ) => {
                 });
 
                 movies.push({ ...movie, data: tmdb.data});
-
+                
             } catch (error) {
 
                 console.log('err',error);
@@ -121,7 +121,7 @@ router.get('/', async ( req, res ) => {
     
             //myList.push({ ...movie, data: tmdb.data});
             //console.log('TTTTMMMMDDDDBBBB', tmdb.data);
-            res.send({ topThreeGenres: [ rankedGenres[0].name, rankedGenres[1].name, rankedGenres[2].name ], data: tmdb.data })
+            res.send({ topThreeGenres: [ rankedGenres[0].name, rankedGenres[1].name, rankedGenres[2].name ], data: tmdb.data.results })
           } catch (error) {
     
             console.log('err',error);
@@ -129,7 +129,8 @@ router.get('/', async ( req, res ) => {
     
           }
 
-        res.sendStatus(200)
+          console.log('The tf message would be helpful if tf-node worked on Apple M1 chips');
+          
     } catch (error) {
         console.log('Recommendation tf HOUSE IS ON FIRE',error);
         res.sendStatus(500); 
