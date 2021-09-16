@@ -5,7 +5,7 @@ const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const tf = require('@tensorflow/tfjs');
 
-
+// Fetch Tensorflow recommendation
 router.get('/', rejectUnauthenticated, async ( req, res ) => {
  
     try {
@@ -60,8 +60,11 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
             }
         }));
         
-        let jsMovieGenres = []; // Array of Movie genres arrays to give to TensorFlow
-        let jsPreferences =[[]]; // 2D array to match jsMovieGenres
+        // Will be a 2D array, each sub array is boolean 
+        // collection where true is if the movie has a given genre
+        let jsMovieGenres = [];
+        // 2D array to match jsMovieGenres
+        let jsPreferences =[[]]; 
 
         // Loop through each movie
         for (const movie of movies) {
@@ -69,7 +72,7 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
             jsPreferences[0].push(movie.anticipation)
             // Put the genres of the move into a nice clean array
             let movieArrayOfGenresIds = [];
-            movie.data.genres.map( genre => movieArrayOfGenresIds.push(genre.id) );
+            movie.data.genres.map(genre => movieArrayOfGenresIds.push(genre.id));
             
             // Each movie will have an array of boolean values per genre
             let genreBooleanArray = [];
@@ -84,6 +87,7 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
             }
             jsMovieGenres.push(genreBooleanArray)
         }
+
         // console.log('result', jsMovieGenres);
         // console.log('jsPref', jsPreferences);
         // console.log('jsGenres', jsGenres);
@@ -119,17 +123,26 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
               }
             });
     
-            //myList.push({ ...movie, data: tmdb.data});
-            //console.log('TTTTMMMMDDDDBBBB', tmdb.data);
-            res.send({ topThreeGenres: [ rankedGenres[0].name, rankedGenres[1].name, rankedGenres[2].name ], data: tmdb.data.results })
-          } catch (error) {
+            //console.log('TMDB info', tmdb.data);
+            // Sending the top three genres and movie data out
+            res.send({ 
+                topThreeGenres: 
+                    [ 
+                        rankedGenres[0].name, 
+                        rankedGenres[1].name, 
+                        rankedGenres[2].name 
+                    ], 
+                data: tmdb.data.results 
+            });
+        } catch (error) {
     
             console.log('err',error);
             res.sendStatus(500);
     
-          }
+        }
 
-          console.log('The tf message would be helpful if tf-node worked on Apple M1 chips');
+        // To address the console log warning that '@tensorflow/tfjs-node' is better
+        console.log('The tf message would be helpful if tf-node worked on Apple M1 chips');
           
     } catch (error) {
         console.log('Recommendation tf HOUSE IS ON FIRE',error);

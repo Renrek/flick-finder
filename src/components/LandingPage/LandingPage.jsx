@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+/**** SYSTEM ****/
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import './LandingPage.css';
 
-// CUSTOM COMPONENTS
+/**** COMPONENTS ****/
 import RegisterForm from '../RegisterForm/RegisterForm';
 
 function LandingPage() {
-  const [heading, setHeading] = useState('Welcome');
+
+  /**** HOOKS ****/
   const history = useHistory();
 
+  /**** STATE ****/
+  const [heading, setHeading] = React.useState('Welcome');
+  
+  // Switch to login
   const onLogin = (event) => {
     history.push('/login');
   };

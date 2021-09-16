@@ -1,8 +1,12 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+
+/**** SNIPPETS ****/
 import formatDateForField from '../../utility/formatDateForField';
 
+/**** COMPONENTS ****/
 import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
@@ -15,7 +19,8 @@ import {
     Box
  } from '@material-ui/core';
 
- import SaveIcon from '@material-ui/icons/Save';
+/**** ICONS ****/
+import SaveIcon from '@material-ui/icons/Save';
 
  const useStyles = makeStyles({
     titleSelector: {
@@ -30,13 +35,17 @@ import {
   });
   
 const EditViewingPage = () => {
+  
+    /**** HOOKS ****/
     const classes = useStyles();
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    
+    /**** STATE ****/
     const movie = useSelector(store => store.editViewing);
     const [dateTime, setDateTime] = React.useState(formatDateForField(movie.viewingDate))
+
+    // On page load get viewing to edit by id supplied by url route (useParams)
     React.useEffect(() => {
         dispatch({
             type: 'FETCH_VIEWING_TO_EDIT',
@@ -44,6 +53,7 @@ const EditViewingPage = () => {
         })
     }, []);
 
+    // Update date of viewing
     const onSave = () => {
         dispatch({
             type: 'SAVE_VIEWING_DATE',

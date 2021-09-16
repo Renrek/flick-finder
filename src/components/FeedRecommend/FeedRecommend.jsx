@@ -1,24 +1,24 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+/**** COMPONENTS ****/
 import FeedRecommendItem from '../FeedRecommendItem/FeedRecommendItem';
 
 /**** MATERIAL UI ****/
-import { makeStyles } from '@material-ui/core';
 import { 
   Paper,
-  Typography,
-  Button,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
 } from '@material-ui/core';
 
 const FeedRecommend = () => {
+
+    /**** HOOKS ****/
     const dispatch = useDispatch();
+
+    /**** STATE ****/
     const recommended = useSelector(store => store.recommended);
 
+    // On load fetch recommended videos from server
     React.useEffect(() => {
         dispatch({ type: "FETCH_RECOMMENDED"})
     }, []);
@@ -30,11 +30,11 @@ const FeedRecommend = () => {
                 {recommended.topThreeGenres.map( genre => (
                     <p>{genre}</p>
                 ))}
-                {recommended.data.map(movie => (
-                    <FeedRecommendItem movie={movie} />
+                {recommended.data.map(movie => ( 
+                    // my need to do short circut evaluation here for key issue - noted in trello
+                    <FeedRecommendItem key={movie.id} movie={movie} />
                 ))}
             </Paper>
-            
         }
         </>
     )

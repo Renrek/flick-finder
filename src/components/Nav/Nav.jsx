@@ -1,7 +1,6 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 /**** MATERIAL UI ****/
@@ -18,6 +17,7 @@ import {
   Toolbar
 } from '@material-ui/core';
 
+/**** ICONS ****/
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
@@ -42,24 +42,26 @@ const useStyles = makeStyles({
 });
 
 function Nav() {
+
+  /**** HOOKS ****/
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
 
+  /**** STATE ****/
   const [ drawerIsVisable , setDrawerIsVisable ] = React.useState(false);
-
   const user = useSelector((store) => store.user);
 
+  // Controls the side menu visablitity
   const toggleDrawer = (open) => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setDrawerIsVisable(open);
   };
 
+  // Log the user out
   const handleLogOut = (open) => (event) => {
-    
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -67,7 +69,6 @@ function Nav() {
     setDrawerIsVisable(open);
     history.push('/home');
   };
-
 
   return (
     <>

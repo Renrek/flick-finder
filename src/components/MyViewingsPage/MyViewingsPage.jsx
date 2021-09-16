@@ -1,6 +1,9 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+
+/**** SNIPPETS ****/
 import getHumanReadableTime from '../../utility/getHumanReadableTime';
 import getMonthDDYYYY from '../../utility/getMonthDDYYYY';
 
@@ -17,6 +20,7 @@ import {
     Button,
 } from '@material-ui/core';
 
+/**** ICONS ****/
 import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,11 +31,16 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const MyViewingsPage = () => {
+
+    /**** HOOKS ****/
     const history = useHistory();
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    /**** STATE ****/
     const viewingList = useSelector(store => store.viewingList);
 
+    // Get viewing list for display
     React.useEffect(() => {
         dispatch({ type: 'FETCH_VIEWING_LIST' })
     }, [])

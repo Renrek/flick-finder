@@ -1,28 +1,28 @@
+/**** SYSTEM ****/
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import getHumanReadableTime from '../../utility/getHumanReadableTime'; // Human readable time.
+import { useSelector } from 'react-redux';
+
+/**** SNIPPETS ****/
+import getHumanReadableTime from '../../utility/getHumanReadableTime';
 import getMonthDDYYY from '../../utility/getMonthDDYYYY';
 
+/**** COMPONENTS ****/
 import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
 import { 
     Paper,
-    Typography,
-    TextField,
-    Button
+    Typography
 } from '@material-ui/core';
 
 
 const ViewingScheduled = () => {
-    const dispatch = useDispatch();
-
-    const lastAddedViewing = useSelector(store => store.lastAddedViewing)
-    const [dateTime, setDateTime] = React.useState('')
-    console.log(lastAddedViewing);
-
     
+    /**** STATE ****/
+    const lastAddedViewing = useSelector(store => store.lastAddedViewing);
+    const [dateTime, setDateTime] = React.useState('');
 
+    // On lastAddedViewing state update, adjust time.
     React.useEffect(() => {
        setDateTime({
            date: getMonthDDYYY(lastAddedViewing.viewingDate),

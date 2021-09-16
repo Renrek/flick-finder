@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   HashRouter as Router,
   Redirect,
@@ -6,10 +7,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import theme from './theme';
-
+/**** APP SECTIONS ****/
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
@@ -29,8 +27,8 @@ import ViewingScheduled from '../ViewingScheduled/ViewingScheduled';
 import EditViewingPage from '../EditViewingPage/EditViewingPage';
 import MyViewingsPage from '../MyViewingsPage/MyViewingsPage';
 
-
 /**** MATERIAL UI ****/
+import theme from './theme';
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core';
 import { Container } from '@material-ui/core';
@@ -67,19 +65,19 @@ function App() {
                 component={UserPage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows add movie page else shows LoginPage
                 exact
                 path="/add-movie"
                 component={AddMoviePage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows my movies page else shows LoginPage
                 exact
                 path="/my-movies"
                 component={MyMoviesPage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows my contacts page else shows LoginPage
                 exact
                 path="/my-contacts"
                 component={MyContactsPage}
@@ -91,7 +89,7 @@ function App() {
                 component={CreateViewingPage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows my viewing page else shows LoginPage
                 exact
                 path="/viewing-scheduled"
                 component={ViewingScheduled}
@@ -103,13 +101,13 @@ function App() {
                 component={MyViewingsPage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows edit viewing else shows LoginPage
                 exact
                 path="/edit-viewing/:id"
                 component={EditViewingPage}
               />
               <ProtectedRoute 
-                // logged in shows InfoPage else shows LoginPage
+                // logged in shows feed (main page) else shows LoginPage
                 exact
                 path="/feed"
                 component={FeedPage}

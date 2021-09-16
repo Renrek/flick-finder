@@ -1,5 +1,9 @@
+/**** SYSTEM ****/
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+/**** COMPONENTS ****/
+import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
 import { makeStyles } from '@material-ui/core';
@@ -14,7 +18,9 @@ import {
   Box
 } from '@material-ui/core';
 
+/**** ICONS ****/
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
   titleSelector: {
@@ -28,18 +34,19 @@ const useStyles = makeStyles({
   
 });
 
-import AddIcon from '@material-ui/icons/Add';
-import MovieImage from '../MovieImage/MovieImage';
 
+// Child componant of AddMovie handles the information of each movie
 const AddMovieItem = ({movie}) => {
+
+    /**** HOOKS ****/
     const classes = useStyles();
     const dispatch = useDispatch();
-    // Anticipation from options from database.
-    const anticipationOptions = useSelector(store => store.anticipationOptions);
 
-    // Local state for select input
+    /**** STATE ****/
+    const anticipationOptions = useSelector(store => store.anticipationOptions);
     const [anticiapation, setAnticipation] = React.useState('');
-    const [isSelected, setIsSelected] = React.useState(false)
+    const [isSelected, setIsSelected] = React.useState(false);
+
     //Save movie to database.
     const handleSumbit = (event) => {
         event.preventDefault();

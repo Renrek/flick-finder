@@ -3,11 +3,10 @@ const db = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-/**
- * GET route template
- */
+// Search contacts table for a user 
 router.get('/search/:string', rejectUnauthenticated, (req, res) => {
 
+    
     const statement = `
         SELECT "id", "username" 
         FROM "user"
@@ -31,30 +30,33 @@ router.get('/search/:string', rejectUnauthenticated, (req, res) => {
       })
 });
 
+// Search contacts table for existing contacts
 router.get('/current', rejectUnauthenticated, (req, res) => {
 
+    // Table is queried twice, once from each perspective 
+    // of columns (userIdA, userIdB ) then appended together with UNION
     const statement = `
-    SELECT "id", "userId", "username"
-    FROM 
-    (
-        SELECT "c"."id" "id", "c"."userIdB" "userId", "u2"."username" "username"
-        FROM "contact" "c"
-        JOIN "user" "u1"
-            ON ( "u1"."id" = "c"."userIdA")
-        JOIN "user" "u2"
-            ON ( "u2"."id" = "c"."userIdB")
-        WHERE "c"."userIdA" = $1
-        UNION
-        SELECT "c"."id" "id", "c"."userIdA" "userId", "u1"."username" "username"
-        FROM "contact" "c"
-        JOIN "user" "u1"
-            ON ( "u1"."id" = "c"."userIdA")
-        JOIN "user" "u2"
-            ON ( "u2"."id" = "c"."userIdB")
-        WHERE "c"."userIdB" = $1
-    ) 
-    AS "contacts"
-    ORDER BY "contacts"."id";`;
+      SELECT "id", "userId", "username"
+      FROM 
+      (
+          SELECT "c"."id" "id", "c"."userIdB" "userId", "u2"."username" "username"
+          FROM "contact" "c"
+          JOIN "user" "u1"
+              ON ( "u1"."id" = "c"."userIdA")
+          JOIN "user" "u2"
+              ON ( "u2"."id" = "c"."userIdB")
+          WHERE "c"."userIdA" = $1
+          UNION
+          SELECT "c"."id" "id", "c"."userIdA" "userId", "u1"."username" "username"
+          FROM "contact" "c"
+          JOIN "user" "u1"
+              ON ( "u1"."id" = "c"."userIdA")
+          JOIN "user" "u2"
+              ON ( "u2"."id" = "c"."userIdB")
+          WHERE "c"."userIdB" = $1
+      ) 
+      AS "contacts"
+      ORDER BY "contacts"."id";`;
 
     db.query(statement, [ req.user.id ])
       .then( result => {
@@ -66,6 +68,7 @@ router.get('/current', rejectUnauthenticated, (req, res) => {
       })
 });
 
+// Delete contact by row id
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
 
   const statement = `DELETE FROM contact WHERE id = $1`;
@@ -80,6 +83,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
     })
 });
 
+// Add contact initiator (current user) is userIdA
 router.post('/', rejectUnauthenticated, (req, res) => {
   
   const statement = `INSERT INTO "contact" ( "userIdA", "userIdB" ) VALUES ( $1, $2 );`;
