@@ -4,6 +4,7 @@ const db = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
+// Delete user movie record by id
 router.delete('/remove/:id', rejectUnauthenticated, (req, res) => {
   
   const statement = `DELETE FROM "userMovieAnticipation" WHERE id = $1`;
@@ -18,6 +19,7 @@ router.delete('/remove/:id', rejectUnauthenticated, (req, res) => {
     })
 });
 
+// Fetch a single movie from TMDB
 router.get('/single/:id', rejectUnauthenticated, (req, res) => {
   
   axios({
@@ -37,6 +39,7 @@ router.get('/single/:id', rejectUnauthenticated, (req, res) => {
 
 });
 
+// Values for created Select inputs.
 router.get('/anticipation-ratings', rejectUnauthenticated, (req,res) => {
 
   const statement = `SELECT "id", "value", "name" FROM "anticipation"`
@@ -50,6 +53,7 @@ router.get('/anticipation-ratings', rejectUnauthenticated, (req,res) => {
     })
 });
 
+// Update users anticipation for a specific movie
 router.put('/anticipation', rejectUnauthenticated, (req,res) => {
   const statement = `
     UPDATE "userMovieAnticipation" 
@@ -65,6 +69,8 @@ router.put('/anticipation', rejectUnauthenticated, (req,res) => {
     })
 });
 
+// Big api call to TMDB - it only returns one movie at a time so I had to
+// programically/async the calls.
 router.get('/my-list', rejectUnauthenticated, async (req,res) => {
   let myList = [];
   
@@ -112,6 +118,7 @@ router.get('/my-list', rejectUnauthenticated, async (req,res) => {
 
 });
 
+// Return genres from TMDB api
 router.get('/genres', rejectUnauthenticated, (req, res) => {
   axios({
     method: 'GET',
@@ -130,6 +137,7 @@ router.get('/genres', rejectUnauthenticated, (req, res) => {
   });
 });
 
+// Api call to TMDB searching for a movie by string
 router.get('/:string', rejectUnauthenticated, (req, res) => {
   axios({
     method: 'GET',
@@ -150,7 +158,7 @@ router.get('/:string', rejectUnauthenticated, (req, res) => {
   });
 });
 
-
+// Adding a movie to the users list of movies
 router.post('/', (req, res) => {
   const statement = `INSERT INTO "userMovieAnticipation" ( "movieId", "userId", "anticipationId" ) VALUES ( $1, $2, $3 );`;
 
@@ -163,7 +171,5 @@ router.post('/', (req, res) => {
       res.sendStatus(500)
     })
 });
-
-
 
 module.exports = router;

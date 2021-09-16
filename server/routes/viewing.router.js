@@ -4,7 +4,7 @@ const db = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-
+// Generate a viewing
 router.post('/new', rejectUnauthenticated, async ( req, res ) => {
     
     //Establish Connection to database
@@ -92,6 +92,8 @@ router.post('/new', rejectUnauthenticated, async ( req, res ) => {
     }
 });
 
+
+// Fetch last added viewing (movie info, and viewers) by user 
 router.get('/last-added', rejectUnauthenticated, (req,res) => {
 
     const statement = `
@@ -121,6 +123,7 @@ router.get('/last-added', rejectUnauthenticated, (req,res) => {
       })
   });
 
+// Fetch next schedualed viewing (movie info, and viewers) by user
 router.get('/next-viewing', rejectUnauthenticated, (req,res) => {
 
     const statement = `
@@ -152,6 +155,7 @@ router.get('/next-viewing', rejectUnauthenticated, (req,res) => {
         })
 });
 
+// Updating the date of a viewing
 router.put('/save-date/:id', rejectUnauthenticated, (req,res) => {
     
     const statement = `
@@ -170,6 +174,7 @@ router.put('/save-date/:id', rejectUnauthenticated, (req,res) => {
         })
 });
 
+// Fetch a list of movies (movie info, and viewers) based on user id
 router.get('/my-list', rejectUnauthenticated, (req,res) => {
     
     const statement = `
@@ -200,6 +205,7 @@ router.get('/my-list', rejectUnauthenticated, (req,res) => {
         })
 });
 
+// Get viewing (movie info, and viewers) based on id
 router.get('/:id', rejectUnauthenticated, (req,res) => {
     
     const statement = `
@@ -230,7 +236,5 @@ router.get('/:id', rejectUnauthenticated, (req,res) => {
             res.sendStatus(500)
         })
 });
-
-
 
 module.exports = router;
