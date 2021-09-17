@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 
 /**** ICONS ****/
-import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,7 +72,7 @@ const MyViewingsPage = () => {
                                 onClick={()=>history
                                     .push(`/edit-viewing/${row.id}`)}
                             >
-                                <SearchIcon />
+                                <EditIcon />
                             </Button>
                         </TableCell>
                     </TableRow>

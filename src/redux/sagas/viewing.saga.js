@@ -51,9 +51,10 @@ function* fetchViewingToEdit(action) {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         };
-        const response = yield axios.get(`/api/viewing/${action.payload}`, config);
+        const response = yield axios.get(`/api/viewing/${action.payload.id}`, config);
         const movieDetails = yield axios.get(`/api/movie/single/${response.data[0].movieId}`, config);
         yield put({ type: 'SET_VIEWING_EDIT', payload: { ...response.data[0], movieDetails: movieDetails.data } });
+        action.payload.history.push(`/edit-viewing/${action.payload.id}`);
     } catch (error) {
         console.log('Fetch next viewing failed', error);
     }
