@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
 import { 
   Paper,
   Typography,
@@ -14,16 +15,29 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Box
 } from '@material-ui/core';
 
 /**** ICONS ****/
 import DeleteIcon from '@material-ui/icons/Delete';
 
+const useStyles = makeStyles({
+  titleSelector: {
+    width: '100%',
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  titleButton: {
+    display: 'block',
+  }
+  
+});
 
 const MyMoviesItem = ({movie}) => {
 
   /**** HOOKS ****/
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   /**** STATE ****/
   const anticipationOptions = useSelector(store => store.anticipationOptions);
@@ -40,21 +54,40 @@ const MyMoviesItem = ({movie}) => {
 
   // Remove unwanted movie
   const handleDelete = () => {
-    dispatch({
-      type: 'DELETE_MOVIE',
-      payload: movie.id
-    })
+    const deleteMessage = `Deleting ${movie.title} from your list`;
+    if(confirm(deleteMessage)){
+      dispatch({
+        type: 'DELETE_MOVIE',
+        payload: movie.id
+      })
+    }
   }
 
   return (
     <Paper>
-        <Typography>{movie.data.title}</Typography>
-        <MovieImage title={movie.data.title} tmdbPath={movie.data.poster_path}/>
+      <Typography
+        className={classes.title}
+        variant="h6"
+        noWrap
+        gutterBottom
+        align="center"
+      >
+        {movie.data.title}
+      </Typography>
+      <Box display="flex" justifyContent="center" >
+        <Box flexShrink={1} mr={2}>
+          <MovieImage 
+            title={movie.data.title} 
+            tmdbPath={movie.data.poster_path}
+          />
+        </Box>
+        <Box flexGrow={1}>
           <FormControl
             required
             variant="outlined"
+            className={classes.titleSelector}
           >
-            <InputLabel>anticipation</InputLabel>
+            <InputLabel>Anticipation</InputLabel>
             <Select
               name="anticipation_id"
               onChange={event => handleChange(event.target.value)}
@@ -71,7 +104,16 @@ const MyMoviesItem = ({movie}) => {
             ))}
             </Select>
           </FormControl>
-          <Button variant="contained" color="secondary" onClick={handleDelete}><DeleteIcon /></Button>
+          <Button 
+            className={classes.titleSelector}
+            variant="contained" 
+            color="secondary" 
+            onClick={handleDelete}
+          >
+              <DeleteIcon />
+          </Button>
+        </Box>
+      </Box>   
     </Paper>
   )
 }

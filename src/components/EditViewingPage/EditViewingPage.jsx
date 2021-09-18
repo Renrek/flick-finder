@@ -22,17 +22,15 @@ import {
 /**** ICONS ****/
 import SaveIcon from '@material-ui/icons/Save';
 
- const useStyles = makeStyles({
-    titleSelector: {
-      width: '100%',
-      marginTop: 30,
-      marginBottom: 10,
-    },
-    titleButton: {
-      display: 'block',
-    }
-    
-  });
+const useStyles = makeStyles({
+  saveButton: {
+    float: 'right', 
+    height: 52
+  },
+  timeDateField: {
+    width: '75%',
+  }
+});
   
 const EditViewingPage = () => {
   
@@ -45,20 +43,12 @@ const EditViewingPage = () => {
     const movie = useSelector(store => store.editViewing);
     const [dateTime, setDateTime] = React.useState(formatDateForField(movie.viewingDate))
 
-    // On page load get viewing to edit by id supplied by url route (useParams)
-    React.useEffect(() => {
-        dispatch({
-            type: 'FETCH_VIEWING_TO_EDIT',
-            payload: id
-        })
-    }, []);
-
     // Update date of viewing
     const onSave = () => {
-        dispatch({
-            type: 'SAVE_VIEWING_DATE',
-            payload: { id, date: dateTime }
-        })
+      dispatch({
+          type: 'SAVE_VIEWING_DATE',
+          payload: { id, date: dateTime }
+      })
     }
 
     return (
@@ -66,31 +56,36 @@ const EditViewingPage = () => {
         { Object.keys(movie).length > 0 ?
             <Paper >
               <Typography
-                    className={classes.title}
-                    variant="h6"
-                    noWrap
-                    gutterBottom
-                    align="center"
-                  >
-                    {movie.movieDetails.original_title}
-                  </Typography>
-              <Box display="flex" justifyContent="center" >
-                <Box flexShrink={1} mr={2}>
-                  <MovieImage title={movie.original_title} tmdbPath={movie.movieDetails.poster_path} />
+                variant="h6"
+                noWrap
+                gutterBottom
+                align="center"
+              >
+                {movie.movieDetails.original_title}
+              </Typography>
+              
+                <Box >
+                  <TextField
+                    variant="outlined"
+                    className={classes.timeDateField}
+                    label="Next Viewing"
+                    type="datetime-local"
+                    defaultValue={dateTime}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={(event) => setDateTime(event.target.value)}
+                  />
+                    <Button 
+                      className={classes.saveButton}
+                      color="primary" 
+                      variant="contained" 
+                      onClick={onSave}
+                    >
+                      <SaveIcon />
+                    </Button>
                 </Box>
-                <Box flexGrow={1}>
-                    <TextField
-                            label="Edit Viewing Date"
-                            type="datetime-local"
-                            defaultValue={dateTime}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            onChange={(event) => setDateTime(event.target.value)}
-                        />
-                    <Button color="primary" variant="contained" onClick={onSave}><SaveIcon /></Button>
-                </Box>
-              </Box>
+              
               {movie.viewers.map((contact) => (
                 <Typography></Typography>
             ))} 

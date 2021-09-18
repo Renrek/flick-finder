@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 
 /**** ICONS ****/
-import SearchIcon from '@material-ui/icons/Search';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +45,13 @@ const MyViewingsPage = () => {
         dispatch({ type: 'FETCH_VIEWING_LIST' })
     }, [])
 
+    const handleEdit = (id) => {
+        dispatch({
+          type: 'FETCH_VIEWING_TO_EDIT',
+          payload: { id: id, history }
+        });
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="simple table">
@@ -67,12 +74,12 @@ const MyViewingsPage = () => {
                         </TableCell>
                         <TableCell align="right">
                             <Button 
+                                disabled={!row.isHost}
                                 variant="contained"
                                 color="primary"
-                                onClick={()=>history
-                                    .push(`/edit-viewing/${row.id}`)}
+                                onClick={()=>handleEdit(row.id)}
                             >
-                                <SearchIcon />
+                                <EditIcon />
                             </Button>
                         </TableCell>
                     </TableRow>

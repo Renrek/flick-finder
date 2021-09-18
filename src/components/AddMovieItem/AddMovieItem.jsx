@@ -48,8 +48,8 @@ const AddMovieItem = ({movie}) => {
     const [isSelected, setIsSelected] = React.useState(false);
 
     //Save movie to database.
-    const handleSumbit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
+        
         setIsSelected(true);
         dispatch({
             type: 'SAVE_MOVIE',
@@ -71,50 +71,43 @@ const AddMovieItem = ({movie}) => {
           <Box display="flex" justifyContent="center" >
             <Box flexShrink={1} mr={2}>
               <MovieImage 
-                title={movie.original_title} 
+                title={movie.title} 
                 tmdbPath={movie.poster_path} 
               />
             </Box>
             <Box flexGrow={1}>
-              
-                <form
-                    noValidate
-                    autoComplete="off" 
-                    onSubmit={handleSumbit}
+              <FormControl
+                required
+                variant="outlined"
+                className={classes.titleSelector}
+                disabled={isSelected}
+              >
+                <InputLabel>anticipation</InputLabel>
+                <Select
+                  name="anticipation_id"
+                  onChange={event => setAnticipation(event.target.value)}
+                  value={anticiapation}
+                  label="Anticipation"
                 >
-                  <FormControl
-                    required
-                    variant="outlined"
-                    className={classes.titleSelector}
-                    disabled={isSelected}
+                {anticipationOptions.map((option)=>(
+                  <MenuItem
+                    key={option.id}
+                    value={option.id}
                   >
-                    <InputLabel>anticipation</InputLabel>
-                    <Select
-                      name="anticipation_id"
-                      onChange={event => setAnticipation(event.target.value)}
-                      value={anticiapation}
-                      label="Anticipation"
-                    >
-                    {anticipationOptions.map((option)=>(
-                      <MenuItem
-                        key={option.id}
-                        value={option.id}
-                      >
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                    </Select>
-                    <Button 
-                      className={classes.titleSelector}
-                      type="submit" 
-                      variant="contained" 
-                      color="primary" 
-                      disabled={isSelected}
-                    >
-                      { isSelected ? <CheckCircleIcon /> :  <AddIcon /> }
-                    </Button>
-                  </FormControl>
-                </form>
+                    {option.name}
+                  </MenuItem>
+                ))}
+                </Select>
+                <Button 
+                  className={classes.titleSelector}
+                  variant="contained" 
+                  color="primary" 
+                  disabled={isSelected}
+                  onClick={handleSubmit}
+                >
+                  { isSelected ? <CheckCircleIcon /> :  <AddIcon /> }
+                </Button>
+              </FormControl>
             </Box>
           </Box>
         </Paper>

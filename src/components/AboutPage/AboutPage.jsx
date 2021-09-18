@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Paper, Typography, Divider } from '@material-ui/core';
+
 // This is one of our simplest components
 // It doesn't have local state,
 // It doesn't dispatch any redux actions or display any part of redux state
@@ -7,11 +9,22 @@ import React from 'react';
 
 function AboutPage() {
   return (
-    <div className="container">
+    <Paper className="container" style={{textAlign: "center"}}>
+      <Typography variant="h5" gutterBottom>Technologies</Typography>
       <div>
-        <p>This about page is for anyone to read!</p>
+        <img style={{width: 250, margin: 20}} src="./img/tmdb.svg"/>
+        <Divider />
+        <img style={{width: 250, margin: 20}} src="./img/express.png"/>
+        <Divider />      
+        <img style={{width: 250, margin: 20}} src="./img/react-logo.jpg"/>
+        <Divider />
+        <img style={{width: 250, margin: 20}} src="./img/redux-saga.png"/>
+        <Divider />
+        <img style={{height: 100, margin: 20}} src="./img/materialui.png"/>
+        <Divider />
+        <img style={{width: 250, margin: 20}} src="./img/tensorflow.png"/>
       </div>
-    </div>
+    </Paper>
   );
 }
 

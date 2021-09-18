@@ -21,6 +21,8 @@ import {
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import AddIcon from '@material-ui/icons/Add';
+import PersonIcon from '@material-ui/icons/Person';
+import EventIcon from '@material-ui/icons/Event';
 import MenuIcon from '@material-ui/icons/Menu';
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation';
 import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
@@ -111,13 +113,13 @@ function Nav() {
           </ListItemText>
         </ListItem>
         <ListItem component={Link} to="/my-viewings" onClick={toggleDrawer(false)}>
-          <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
+          <ListItemIcon><EventIcon /></ListItemIcon>
           <ListItemText>
               My Viewings
           </ListItemText>
         </ListItem>
         <ListItem component={Link} to="/my-contacts" onClick={toggleDrawer(false)}>
-          <ListItemIcon><LocalMoviesIcon /></ListItemIcon>
+          <ListItemIcon><PersonIcon /></ListItemIcon>
           <ListItemText>
               My Contacts
           </ListItemText>

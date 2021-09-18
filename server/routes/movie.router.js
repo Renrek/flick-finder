@@ -95,7 +95,8 @@ router.get('/my-list', rejectUnauthenticated, async (req,res) => {
           }
         });
 
-        myList.push({ ...movie, data: tmdb.data});
+        // Added title to surface object for easier sorting
+        myList.push({ ...movie, title: tmdb.data.title, data: tmdb.data});
 
       } catch (error) {
 
@@ -105,8 +106,16 @@ router.get('/my-list', rejectUnauthenticated, async (req,res) => {
       }
     }));
 
+    // Sort list by title
+    myList.sort(( a, b ) => 
+      ( a.title > b.title) 
+      ? 1 : 
+      ((b.title > a.title) 
+      ? -1 : 0
+      ));
+
     // Return payload
-    // format [{id:, movieId:, anticipationId:, data:{api_results}}, ]
+    // format [{id:, movieId:, title:, anticipationId:, data:{api_results}}, ]
     res.send(myList);
 
   } catch (error) {

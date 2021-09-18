@@ -10,14 +10,28 @@ import formatDateForField from '../../utility/formatDateForField';
 import ViewerButton from '../ViewerButton/ViewerButton';
 
 /**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
 import { 
     Paper,
     TextField,
     Button
  } from '@material-ui/core';
 
-const CreateViewingPage = () => {
+/**** ICONS ****/
+import SaveIcon from '@material-ui/icons/Save';
 
+const useStyles = makeStyles({
+    saveButton: {
+      float: 'right', 
+      height: 52
+    },
+    timeDateField: {
+      width: '75%',
+    }
+});
+
+const CreateViewingPage = () => {
+    const classes = useStyles();
     /**** HOOKS ****/
     const dispatch = useDispatch();
     const history = useHistory();
@@ -47,6 +61,8 @@ const CreateViewingPage = () => {
             <Paper>
                 <form  noValidate onSubmit={handleSubmit}>
                     <TextField
+                        variant="outlined"
+                        className={classes.timeDateField}
                         label="Next Viewing"
                         type="datetime-local"
                         defaultValue={dateTime}
@@ -57,11 +73,12 @@ const CreateViewingPage = () => {
                         
                     />
                     <Button
+                        className={classes.saveButton}
                         type="submit"
                         variant="contained"
                         color="primary"
                     >
-                        Add Viewing
+                        <SaveIcon />
                     </Button>
                 </form>
                 
