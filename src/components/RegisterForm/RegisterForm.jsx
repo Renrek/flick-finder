@@ -1,11 +1,35 @@
+/**** SYSTEM ****/
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+/**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
+import { 
+  Paper, 
+  TextField, 
+  Button, 
+  Typography
+} from '@material-ui/core';
+
+const useStyles = makeStyles({
+  forms:{
+    '& > *': {
+        margin: 10,
+        width:'95%',
+    },
+},
+});
+
 function RegisterForm() {
+  /**** HOOKS ****/
+  const dispatch = useDispatch();
+  const classes = useStyles();
+
+  /**** STATE ****/
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
-  const dispatch = useDispatch();
+  
 
   const registerUser = (event) => {
     event.preventDefault();
@@ -20,41 +44,42 @@ function RegisterForm() {
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
+    <Paper>
+      <Typography variant="h5">Register User</Typography>
+      <form className={classes.forms} onSubmit={registerUser}>
+        {errors.registrationMessage && (
+          <h3 className="alert" role="alert">
+            {errors.registrationMessage}
+          </h3>
+        )}
+        <TextField 
+          required
+          name="username"
+          type="text"
+          label="Username"
+          variant="outlined"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
+        <TextField 
+          required
+          name="password"
+          label="password"
+          type="password"
+          variant="outlined"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+        <Button 
+          type="submit" 
+          name="submit"
+          variant="contained"
+          color="primary"
+        >
+            Register
+        </Button>
+      </form>
+    </Paper>
   );
 }
 
