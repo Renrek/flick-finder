@@ -103,7 +103,7 @@ const FeedNextViewing = () => {
                 align="center"
                 gutterBottom
               >
-                Particiapants: {movie.viewers.length + 1}
+                Participants: {movie.viewers.length + 1}
               </Typography>
               {movie.isHost && 
                 <Button

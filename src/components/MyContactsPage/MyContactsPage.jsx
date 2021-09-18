@@ -3,23 +3,48 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
 import { 
     Paper,
     Typography,
     TextField,
-    Chip,
+    ButtonGroup,
     Button
  } from '@material-ui/core';
 
  /**** ICONS ****/
-import FaceIcon from '@material-ui/icons/Face';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
+
+const useStyles = makeStyles({
+    searchButton: {
+      float: 'right', 
+      height: 52
+    },
+    searchField: {
+      width: '75%',
+    },
+    addContactButton: {
+        width: '100%', 
+        marginTop: 20, 
+        marginBottom: 20
+    },
+    buttonGroup: {
+        width: '100%', 
+        marginTop: 20, 
+        marginBottom: 20
+    },
+    currentContactButton: {
+        width: '100%',
+    }
+});
 
 const MyContactsPage = () => {
 
     /**** HOOKS ****/
     const dispatch = useDispatch();
+    const classes = useStyles();
 
     /**** STATE ****/
     const [searchField, setSearchField] = React.useState('')
@@ -63,38 +88,58 @@ const MyContactsPage = () => {
                     <TextField 
                         required
                         label="Search"
+                        className={classes.searchField}
                         variant="outlined"
                         value={searchField}
                         onChange={(event)=> setSearchField(event.target.value)}
                     />
-                    <Button type="submit" variant="contained" color="primary"><SearchIcon /></Button>
+                    <Button className={classes.searchButton} type="submit" variant="contained" color="primary"><SearchIcon /></Button>
                 </form>
-                <Typography>Found</Typography>
-                {contactsFound.map((contact)=>(
-                    <Chip 
-                        key={contact.id}
-                        icon={<FaceIcon />}
-                        deleteIcon={<AddCircleIcon />}
-                        label={contact.username}
-                        onDelete={() => handleAdd(contact.id)}
-                        onClick={() => handleAdd(contact.id)}
-                        color="primary"
-                    />
-                ))}
             </Paper>
-           
+            { contactsFound.length > 0 && 
             <Paper>
-                <Typography>Current</Typography>
+                <Typography 
+                    variant="h5"
+                >
+                    Contacts Found
+                </Typography>
+                {contactsFound.map((contact)=>(
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        className={classes.addContactButton}
+                        startIcon={<AddIcon />}
+                        onClick={() => handleAdd(contact.id)}
+                    >
+                        {contact.username}
+                    </Button>
+                ))}
+                </Paper>
+                }
+                <Paper>
+                <Typography  
+                    variant="h5"
+                >
+                    Current
+                </Typography>
                 {contacts.map((contact)=> (
-                 
-                    <Chip 
-                        key={contact.id}
-                        icon={<FaceIcon />}
-                        label={contact.username}
-                        onDelete={() => handleDelete(contact.id)}
-                        onClick={() => handleDelete(contact.id)}
-                        color="secondary"
-                    />
+                    <ButtonGroup
+                        className={classes.buttonGroup}
+                        variant="contained"
+                    >
+                        <Button
+                            className={classes.currentContactButton}
+                            color="primary"
+                        >
+                            {contact.username}
+                        </Button>
+                        <Button
+                            color="secondary"
+                            onClick={() => handleDelete(contact.id)}
+                        >
+                            <DeleteIcon />
+                        </Button>
+                    </ButtonGroup>  
                 ))}
             </Paper>
         </>
