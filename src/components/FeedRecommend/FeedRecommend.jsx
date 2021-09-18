@@ -31,13 +31,13 @@ const FeedRecommend = () => {
                 <Typography 
                     variant="h5"
                     align="center"
-                    gutterbottom
+                    gutterBottom
                 >
                     Recommendations
                 </Typography>
                 <Typography
                     variant="subtitle2"
-                    gutterbottom
+                    gutterBottom
                     align="center"
                 >
                     Based on your top three preferred genres
