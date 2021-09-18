@@ -42,7 +42,8 @@ router.get('/single/:id', rejectUnauthenticated, (req, res) => {
 // Values for created Select inputs.
 router.get('/anticipation-ratings', rejectUnauthenticated, (req,res) => {
 
-  const statement = `SELECT "id", "value", "name" FROM "anticipation"`
+  const statement = `SELECT "id", "value", "name" FROM "anticipation"`;
+
   db.query(statement)
     .then( result => {
       res.send(result.rows);
@@ -147,29 +148,62 @@ router.get('/genres', rejectUnauthenticated, (req, res) => {
 });
 
 // Api call to TMDB searching for a movie by string
-router.get('/:string', rejectUnauthenticated, (req, res) => {
-  axios({
-    method: 'GET',
-    url: 'https://api.themoviedb.org/3/search/movie',
-    params: {
-      api_key: process.env.TMDB_API_KEY,
-      language: 'en-US',
-      include_adult: 'false',
-      query: req.params.string
-    }
-  })
-  .then(response => {
-    res.send(response.data.results);
-  })
-  .catch(err => {
-    console.log('err',err);
+router.get('/:string', rejectUnauthenticated, async (req, res) => {
+  let movieSearch;
+  let myMovies;
+
+  try {
+
+    const response = await axios({
+      method: 'GET',
+      url: 'https://api.themoviedb.org/3/search/movie',
+      params: {
+        api_key: process.env.TMDB_API_KEY,
+        language: 'en-US',
+        include_adult: 'false',
+        query: req.params.string
+      }
+    });
+
+    movieSearch = response.data.results
+  
+  } catch (error) {
+    console.log('err',error);
     res.sendStatus(500);
-  });
+  }
+  
+  //console.log('test', movieSearch[0].id);
+  
+   try {
+    const statement = `
+      SELECT 
+      ARRAY_AGG("movieId") "movieIds"
+      FROM "userMovieAnticipation" 
+      WHERE "userId" = $1`;                  
+
+    const response = await db.query(statement, [ req.user.id ])
+      
+    myMovies = response.rows[0].movieIds;
+      
+   } catch (error) {
+      console.log('err',error);
+      res.sendStatus(500);
+   }
+
+   // Filtering out movies that already exist within user movie list
+   movieSearch = movieSearch.filter(row => !myMovies.includes(row.id));
+
+   res.send(movieSearch);
+   
 });
 
 // Adding a movie to the users list of movies
 router.post('/', (req, res) => {
-  const statement = `INSERT INTO "userMovieAnticipation" ( "movieId", "userId", "anticipationId" ) VALUES ( $1, $2, $3 );`;
+  const statement = `
+    INSERT INTO "userMovieAnticipation" 
+      ( "movieId", "userId", "anticipationId" ) 
+    VALUES 
+      ( $1, $2, $3 );`;
 
   db.query(statement, [ req.body.movieId, req.user.id, req.body.anticipationId ])
     .then( result => {
