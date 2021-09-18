@@ -52,11 +52,14 @@ const MyContactsPage = () => {
     const contactsFound = useSelector(store => store.contactSearch)
 
     // Remove contact
-    const handleDelete = (id) => {
-        dispatch({
-            type: 'DELETE_CONTACT',
-            payload: id
-        });
+    const handleDelete = (id, name) => {
+        const message = `Removing ${name} from your contacts`;
+        if(confirm(message)){
+            dispatch({
+                type: 'DELETE_CONTACT',
+                payload: id
+            });
+        }
     };
 
     // contact lookup
@@ -93,7 +96,14 @@ const MyContactsPage = () => {
                         value={searchField}
                         onChange={(event)=> setSearchField(event.target.value)}
                     />
-                    <Button className={classes.searchButton} type="submit" variant="contained" color="primary"><SearchIcon /></Button>
+                    <Button 
+                        className={classes.searchButton} 
+                        type="submit" 
+                        variant="contained" 
+                        color="primary"
+                    >
+                        <SearchIcon />
+                    </Button>
                 </form>
             </Paper>
             { contactsFound.length > 0 && 
@@ -135,7 +145,7 @@ const MyContactsPage = () => {
                         </Button>
                         <Button
                             color="secondary"
-                            onClick={() => handleDelete(contact.id)}
+                            onClick={() => handleDelete(contact.id, contact.username)}
                         >
                             <DeleteIcon />
                         </Button>

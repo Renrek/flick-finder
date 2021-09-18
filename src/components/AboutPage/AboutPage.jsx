@@ -10,8 +10,10 @@ import { Paper, Typography, Divider } from '@material-ui/core';
 function AboutPage() {
   return (
     <Paper className="container" style={{textAlign: "center"}}>
-      <Typography variant="h6">Technologies used to develop this application</Typography>
+      <Typography variant="h5" gutterBottom>Technologies</Typography>
       <div>
+        <img style={{width: 250, margin: 20}} src="./img/tmdb.svg"/>
+        <Divider />
         <img style={{width: 250, margin: 20}} src="./img/express.png"/>
         <Divider />      
         <img style={{width: 250, margin: 20}} src="./img/react-logo.jpg"/>
