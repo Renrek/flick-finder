@@ -40,7 +40,7 @@ const FeedRecommend = () => {
                     gutterbottom
                     align="center"
                 >
-                    Based on your top three prefured genres
+                    Based on your top three preferred genres
                 </Typography>
                 {recommended.topThreeGenres.map( (genre, i) => (
                     <Typography

@@ -54,10 +54,13 @@ const MyMoviesItem = ({movie}) => {
 
   // Remove unwanted movie
   const handleDelete = () => {
-    dispatch({
-      type: 'DELETE_MOVIE',
-      payload: movie.id
-    })
+    const deleteMessage = `Deleting ${movie.title} from your list`;
+    if(confirm(deleteMessage)){
+      dispatch({
+        type: 'DELETE_MOVIE',
+        payload: movie.id
+      })
+    }
   }
 
   return (
