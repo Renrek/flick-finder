@@ -189,14 +189,21 @@ router.get('/:string', rejectUnauthenticated, async (req, res) => {
       console.log('err',error);
       res.sendStatus(500);
    }
+
+   // Filtering out movies that already exist within user movie list
+   movieSearch = movieSearch.filter(row => !myMovies.includes(row.id));
+
+   res.send(movieSearch);
    
-   movieSearch = movieSearch.filter(row => !myMovies.includes(row.id))
-   res.send(movieSearch)
 });
 
 // Adding a movie to the users list of movies
 router.post('/', (req, res) => {
-  const statement = `INSERT INTO "userMovieAnticipation" ( "movieId", "userId", "anticipationId" ) VALUES ( $1, $2, $3 );`;
+  const statement = `
+    INSERT INTO "userMovieAnticipation" 
+      ( "movieId", "userId", "anticipationId" ) 
+    VALUES 
+      ( $1, $2, $3 );`;
 
   db.query(statement, [ req.body.movieId, req.user.id, req.body.anticipationId ])
     .then( result => {

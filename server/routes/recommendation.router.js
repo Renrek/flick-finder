@@ -8,6 +8,9 @@ const tf = require('@tensorflow/tfjs');
 // Fetch Tensorflow recommendation
 router.get('/', rejectUnauthenticated, async ( req, res ) => {
  
+    let movieSearchResults;
+    let tmdbMovieList = [];
+    
     try {
         // Grab movie genres
         let genres;
@@ -26,20 +29,29 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
             res.sendStatus(500);   
         }
 
-        //Grab user's movies
-        let movies = [];
-        const statement = `
-            SELECT "uma"."id", "uma"."movieId", "a"."value" as "anticipation" 
-            FROM "userMovieAnticipation" "uma"
-            JOIN "anticipation" "a"
-                ON ("a"."id" = "uma"."anticipationId")
-            WHERE "userId" = $1
-            ORDER BY "id" LIMIT 100`;
+        try {
+            
+            const statement = `
+                SELECT "uma"."id", "uma"."movieId", "a"."value" as "anticipation" 
+                FROM "userMovieAnticipation" "uma"
+                JOIN "anticipation" "a"
+                    ON ("a"."id" = "uma"."anticipationId")
+                WHERE "userId" = $1
+                ORDER BY "id" LIMIT 100`;
 
-        const result = await db.query(statement, [ req.user.id ]); 
+            const results = await db.query(statement, [ req.user.id ]);
+            
+            movieSearchResults = results.rows;
+
+            
+        } catch (error) {
+            
+        }
+        //Grab user's movies
+        
 
         //Cycle through sql results and add TMDB data to the information
-        await Promise.all(result.rows.map( async (movie) => {
+        await Promise.all(movieSearchResults.map( async (movie) => {
             try {
 
                 let tmdb = await axios({
@@ -50,7 +62,7 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
                 }
                 });
 
-                movies.push({ ...movie, data: tmdb.data});
+                tmdbMovieList.push({ ...movie, data: tmdb.data});
                 
             } catch (error) {
 
@@ -67,7 +79,7 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
         let jsPreferences =[[]]; 
 
         // Loop through each movie
-        for (const movie of movies) {
+        for (const movie of tmdbMovieList) {
             
             jsPreferences[0].push(movie.anticipation)
             // Put the genres of the move into a nice clean array
@@ -123,6 +135,16 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
               }
             });
     
+            // simplify movie data
+            let recommendations = tmdb.data.results;
+
+            // Reduce to an array of moiveIds
+            let movieIds = movieSearchResults.map( a => a.movieId);
+            
+            // Strip out movies that are already within user movie list
+            recommendations = recommendations.filter(row => !movieIds.includes(row.id));
+            
+            
             //console.log('TMDB info', tmdb.data);
             // Sending the top three genres and movie data out
             res.send({ 
@@ -132,7 +154,7 @@ router.get('/', rejectUnauthenticated, async ( req, res ) => {
                         rankedGenres[1].name, 
                         rankedGenres[2].name 
                     ], 
-                data: tmdb.data.results 
+                data: recommendations
             });
         } catch (error) {
     
