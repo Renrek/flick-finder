@@ -86,9 +86,10 @@ const EditViewingPage = () => {
                     </Button>
                 </Box>
               
+              {/* Future addition
               {movie.viewers.map((contact) => (
                 <Typography></Typography>
-            ))} 
+            ))}  */}
             </Paper>
            
             :

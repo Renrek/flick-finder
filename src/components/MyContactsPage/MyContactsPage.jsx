@@ -115,6 +115,7 @@ const MyContactsPage = () => {
                 </Typography>
                 {contactsFound.map((contact)=>(
                     <Button
+                        key={contact.id}
                         color="primary"
                         variant="contained"
                         className={classes.addContactButton}
@@ -134,6 +135,7 @@ const MyContactsPage = () => {
                 </Typography>
                 {contacts.map((contact)=> (
                     <ButtonGroup
+                        key={contact.id}
                         className={classes.buttonGroup}
                         variant="contained"
                     >
