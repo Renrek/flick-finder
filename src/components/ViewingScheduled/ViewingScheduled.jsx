@@ -10,14 +10,27 @@ import getMonthDDYYY from '../../utility/getMonthDDYYYY';
 import MovieImage from '../MovieImage/MovieImage';
 
 /**** MATERIAL UI ****/
+import { makeStyles } from '@material-ui/core';
 import { 
     Paper,
-    Typography
+    Typography,
+    Box
 } from '@material-ui/core';
 
-
-const ViewingScheduled = () => {
+const useStyles = makeStyles({
+    titleSelector: {
+      width: '100%',
+      marginTop: 30,
+      marginBottom: 10,
+    },
+    titleButton: {
+      display: 'block',
+    }
     
+  });
+const ViewingScheduled = () => {
+    /**** HOOKS ****/
+  const classes = useStyles();
     /**** STATE ****/
     const lastAddedViewing = useSelector(store => store.lastAddedViewing);
     const [dateTime, setDateTime] = React.useState('');
@@ -33,15 +46,55 @@ const ViewingScheduled = () => {
     return (
         <Paper>
             {lastAddedViewing.viewers ? <div>
-                <Typography variant="h6">Just added {lastAddedViewing.movieDetails.original_title} </Typography>
-            
+                <Typography 
+            variant="h5"
+            align="center"
+            gutterBottom 
+          >
+            Viewing Added
+          </Typography>
+         
+          <Typography
+            className={classes.title}
+            variant="h6"
+            noWrap
+            gutterBottom
+            align="center"
+          >
+            {lastAddedViewing.movieDetails.original_title}
+          </Typography>
+          <Box display="flex" justifyContent="center" >
+            <Box flexShrink={1} mr={2}>
             <MovieImage title={lastAddedViewing.movieDetails.original_title} tmdbPath={lastAddedViewing.movieDetails.poster_path} />
-                <br/>
-            <p>{dateTime.date}</p>
-            <p>{dateTime.time}</p>
-            {lastAddedViewing.viewers.map(viewerId => (
-                    <div key={viewerId}>{viewerId}</div>
-            ))}
+            </Box>
+            <Box flexGrow={1}>
+              <Typography 
+                style={{ marginTop: 50}}
+                align="center"
+                variant="h6" 
+                gutterBottom 
+              >
+                {dateTime.date}
+              </Typography>
+              <Typography 
+                variant="h6" 
+                align="center"
+                gutterBottom
+              >
+                  {dateTime.time}
+              </Typography>
+              <Typography 
+                align="center"
+                gutterBottom
+              >
+                Participants: {lastAddedViewing.viewers.length + 1}
+              </Typography>
+              
+            </Box>
+          </Box>
+            
+            
+               
        
          </div>
          : <p>.....LOADING</p>}
