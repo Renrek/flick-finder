@@ -7,7 +7,7 @@ _Duration: 2 Week Sprint_
 
 Our household has a vast collection of movies that we want to watch, and we can never decide on one in a timely manner. Due to collective indecisiveness, we could have watched half a film in the time that it took to decide on one. This is a major frustration for me in that it is a waste of time where I could be productive. Prior to my enrollment in this course, this was a project that was desired by my whole family. I had the intention to write it using PHP/MariaDB in conjunction with Laravel to make a mobile-friendly web app, but like many other to-do projects, it never got started. Developing this app was not just to be a show piece but to be a functional and usable tool.
 
-To see the fully functional site, please visit: [DEPLOYED VERSION OF APP](www.heroku.com)
+To see the fully functional site, please visit: [https://powerful-sands-58748.herokuapp.com/](https://powerful-sands-58748.herokuapp.com/#/home)
 
 ## Screen Shot
 
