@@ -13,7 +13,7 @@ To see the fully functional site, please visit: [DEPLOYED VERSION OF APP](www.he
 
 ![AddMovies](documentation/images/addMovies.gif)
 
-### Prerequisites
+## Prerequisites
 
 - [Node.js](https://nodejs.org/en/)
 - [PostgreSQL](https://www.postgresql.org/)

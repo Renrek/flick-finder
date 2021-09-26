@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 /**** COMPONENTS ****/
 import RegisterForm from '../RegisterForm/RegisterForm';
 
+/**** MATERIAL UI ****/
+import { Button } from '@material-ui/core';
 function LandingPage() {
 
   /**** HOOKS ****/
@@ -24,9 +26,14 @@ function LandingPage() {
       <RegisterForm />
           <center>
             <h4>Already a Member?</h4>
-            <button className="btn btn_sizeSm" onClick={onLogin}>
+            <Button
+              style={{ width: '100%' }}
+              variant="contained"
+              color="primary"
+              onClick={onLogin}
+            >
               Login
-            </button>
+            </Button>
           </center>
         </div>
      
